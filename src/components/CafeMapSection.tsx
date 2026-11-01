@@ -19,6 +19,7 @@ import { distanceMetres } from "@/lib/distance";
 import type { SunStatus } from "@/lib/sunStatus";
 import type { DisplayStatus } from "@/lib/sunTimeline";
 import { CafeCard } from "@/components/CafeCard";
+import { useIsPhone } from "@/components/useIsPhone";
 
 const LONDON_CENTER = { lat: 51.5225, lng: -0.145 };
 const DEFAULT_ZOOM = 13;
@@ -113,6 +114,16 @@ export function CafeMapSection({
   const [locateEl, setLocateEl] = useState<HTMLDivElement | null>(null);
   const userMarkerRef = useRef<google.maps.Marker | null>(null);
   const [openCafeId, setOpenCafeId] = useState<string | null>(null);
+  // Phones have no room for the map popup, so a tapped pin shows a small preview instead; tapping
+  // the preview opens the full café card in front of a dimmed page.
+  const isPhone = useIsPhone();
+  const [detailOpen, setDetailOpen] = useState(false);
+  // The marker listeners are created once, so they read the current screen size through a ref.
+  const phoneRef = useRef(isPhone);
+  useEffect(() => {
+    phoneRef.current = isPhone;
+    if (isPhone) infoWindowRef.current?.close();
+  }, [isPhone]);
   const [activeFilters, setActiveFilters] = useState<SunStatus[]>([]);
   const [when, setWhen] = useState<MapWhen>(NOW);
   // The big layout (sidebar list + large map) only exists on the /map page; on the home
@@ -231,7 +242,9 @@ export function CafeMapSection({
       });
       marker.addListener("click", () => {
         setOpenCafeId(summary.cafe.id);
-        infoWindowRef.current?.open({ map, anchor: marker });
+        setDetailOpen(false);
+        if (phoneRef.current) infoWindowRef.current?.close();
+        else infoWindowRef.current?.open({ map, anchor: marker });
       });
       markersRef.current.set(summary.cafe.id, marker);
     });
@@ -250,7 +263,8 @@ export function CafeMapSection({
     });
   }, [ready, summaries, markerKey]);
 
-  function goToCafe(cafeId: string) {
+  // On a phone, `detail` opens the full card straight away (a tap on a list row) instead of just the preview.
+  function goToCafe(cafeId: string, detail = false) {
     const map = mapRef.current;
     const marker = markersRef.current.get(cafeId);
     const position = marker?.getPosition();
@@ -258,7 +272,18 @@ export function CafeMapSection({
     map.panTo(position);
     map.setZoom(CAFE_FOCUS_ZOOM);
     setOpenCafeId(cafeId);
-    infoWindowRef.current?.open({ map, anchor: marker });
+    if (isPhone) {
+      infoWindowRef.current?.close();
+      setDetailOpen(detail);
+    } else {
+      infoWindowRef.current?.open({ map, anchor: marker });
+    }
+  }
+
+  function closeCafe() {
+    infoWindowRef.current?.close();
+    setOpenCafeId(null);
+    setDetailOpen(false);
   }
 
   // Typing narrows the map to the matching café(s) and moves the view to them.
@@ -267,10 +292,7 @@ export function CafeMapSection({
     setSuggestionsOpen(true);
 
     const matched = summaries.filter((s) => isVisible(s, activeFilters, value));
-    if (openCafeId && !matched.some((s) => s.cafe.id === openCafeId)) {
-      infoWindowRef.current?.close();
-      setOpenCafeId(null);
-    }
+    if (openCafeId && !matched.some((s) => s.cafe.id === openCafeId)) closeCafe();
 
     // Leave the map alone while a matching pin is already on screen; only step in when
     // the user has wandered off (zoomed far into another area, or out to the world).
@@ -292,10 +314,7 @@ export function CafeMapSection({
 
   function closeOpenPopupIfHidden(filters: SunStatus[], nextWhen: MapWhen) {
     const open = openCafeId ? summaries.find((s) => s.cafe.id === openCafeId) : undefined;
-    if (open && !isVisible(open, filters, "", nextWhen)) {
-      infoWindowRef.current?.close();
-      setOpenCafeId(null);
-    }
+    if (open && !isVisible(open, filters, "", nextWhen)) closeCafe();
   }
 
   function changeWhen(next: MapWhen) {
@@ -345,6 +364,22 @@ export function CafeMapSection({
   }
 
   const openSummary = openCafeId ? summaries.find((s) => s.cafe.id === openCafeId) : undefined;
+  const modalShown = isPhone && detailOpen && Boolean(openSummary);
+
+  // While the full card is open: Esc closes it and the page behind doesn't scroll.
+  useEffect(() => {
+    if (!modalShown) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setDetailOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [modalShown]);
 
   return (
     <div className={`map-panel${expanded ? " map-panel--expanded" : ""}${isPage ? " map-panel--page" : ""}`}>
@@ -396,7 +431,7 @@ export function CafeMapSection({
               <button
                 type="button"
                 className={`map-list-item${summary.cafe.id === openCafeId ? " map-list-item--active" : ""}`}
-                onClick={() => goToCafe(summary.cafe.id)}
+                onClick={() => goToCafe(summary.cafe.id, true)}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={`/api/cafe-photo/${summary.cafe.id}`} alt="" className="map-list-photo" />
@@ -442,7 +477,42 @@ export function CafeMapSection({
           </button>,
           locateEl,
         )}
-      {popupEl && openSummary && createPortal(<CafeCard key={openSummary.cafe.id} summary={openSummary} />, popupEl)}
+      {popupEl && openSummary && !isPhone && createPortal(<CafeCard key={openSummary.cafe.id} summary={openSummary} />, popupEl)}
+      {isPhone && openSummary && !detailOpen && (
+        <div className="map-preview">
+          <button type="button" className="map-list-item" onClick={() => setDetailOpen(true)}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={`/api/cafe-photo/${openSummary.cafe.id}`} alt="" className="map-list-photo" />
+            <span className="map-list-body">
+              <span className="map-list-head">
+                <span className="map-list-name">{openSummary.cafe.name}</span>
+                <span className={`badge ${SUN_STATUS_BADGE_CLASS[statusFor(openSummary)]}`}>
+                  {SUN_STATUS_LABEL[statusFor(openSummary)]}
+                </span>
+              </span>
+              <span className="cafe-card-meta">{SEATING_TYPE_LABEL[openSummary.cafe.seatingType]}</span>
+              <span className="cafe-card-meta">
+                {openSummary.cafe.addressLine} · {formatHours(hoursFor(openSummary))}
+              </span>
+            </span>
+          </button>
+          <button type="button" className="map-preview-close" onClick={closeCafe} aria-label="Close preview">
+            ×
+          </button>
+        </div>
+      )}
+      {modalShown && openSummary &&
+        createPortal(
+          <div className="map-modal-backdrop" role="dialog" aria-modal="true" aria-label={openSummary.cafe.name} onClick={() => setDetailOpen(false)}>
+            <div className="map-modal" onClick={(e) => e.stopPropagation()}>
+              <button type="button" className="map-modal-close" onClick={() => setDetailOpen(false)} aria-label="Close">
+                ×
+              </button>
+              <CafeCard key={openSummary.cafe.id} summary={openSummary} />
+            </div>
+          </div>,
+          document.body,
+        )}
     </div>
   );
 }
