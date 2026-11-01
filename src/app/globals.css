@@ -911,3 +911,9 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
   .site-nav { gap: 10px; }
   .site-nav-link { font-size: 0.66rem; letter-spacing: 0.05em; }
 }
+
+/* Touch screens: horizontal swipes belong to the photo and Today/Tomorrow carousels; vertical drags still scroll the page. */
+@media (pointer: coarse) {
+  .cafe-card-photo-carousel,
+  .sun-timeline-carousel { touch-action: pan-y; }
+}

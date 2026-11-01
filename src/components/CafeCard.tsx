@@ -7,6 +7,7 @@ import { formatHours } from "@/lib/cafeHours";
 import { getGoogleMapsUrl } from "@/lib/mapsLink";
 import { SEATING_TYPE_LABEL } from "@/lib/seatingTypePresentation";
 import { SunTimeline } from "@/components/SunTimeline";
+import { useSwipe } from "@/components/useSwipe";
 
 export function CafeCard({ summary }: { summary: CafeSunSummary }) {
   const { cafe, status, todayTimeline, tomorrowTimeline, todayHours, tomorrowHours } = summary;
@@ -53,9 +54,26 @@ export function CafeCard({ summary }: { summary: CafeSunSummary }) {
     setActivePhoto((i) => (i + 1) % photoCount);
   }
 
+  const photoSwipe = useSwipe({
+    onSwipeLeft: () => {
+      if (photoCount <= 1) return;
+      setPhotoFailed(false);
+      setActivePhoto((i) => (i + 1) % photoCount);
+    },
+    onSwipeRight: () => {
+      if (photoCount <= 1) return;
+      setPhotoFailed(false);
+      setActivePhoto((i) => (i - 1 + photoCount) % photoCount);
+    },
+  });
+  const timelineSwipe = useSwipe({
+    onSwipeLeft: () => setShowTomorrow(true),
+    onSwipeRight: () => setShowTomorrow(false),
+  });
+
   return (
     <article className="cafe-card">
-      <div className="cafe-card-photo-carousel">
+      <div className="cafe-card-photo-carousel" {...photoSwipe}>
         {photoFailed ? (
           <div className={`cafe-card-photo cafe-card-photo--${status}`} />
         ) : (
@@ -117,7 +135,7 @@ export function CafeCard({ summary }: { summary: CafeSunSummary }) {
           </p>
         </div>
 
-        <div className="sun-timeline-carousel" style={{ height: carouselHeight }}>
+        <div className="sun-timeline-carousel" style={{ height: carouselHeight }} {...timelineSwipe}>
           <div
             className="sun-timeline-carousel-track"
             style={{ transform: showTomorrow ? "translateX(-50%)" : "translateX(0%)" }}
