@@ -422,6 +422,10 @@ export function CafeMapSection({
       ) : (
         <div ref={containerRef} className="cafe-map" />
       )}
+      {/* Phones only (see globals.css): the expand/collapse button sits in the map's top-right corner instead of the toolbar. */}
+      <Link href={isPage ? "/" : "/map"} className="map-expand-corner">
+        {isPage ? "Collapse map" : "Expand map"}
+      </Link>
       {locateEl &&
         createPortal(
           <button

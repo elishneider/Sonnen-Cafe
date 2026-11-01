@@ -925,3 +925,35 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
     justify-content: center;
   }
 }
+
+/* Map buttons. The "Expand map" / "Collapse map" button lives in the toolbar on laptops; on phones
+   it moves to a small button in the map's top-right corner (same grid cell as the map). */
+.map-expand-corner { display: none; }
+@media (max-width: 560px) {
+  .map-expand { display: none; }
+  .map-panel:not(.map-panel--expanded) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .map-panel:not(.map-panel--expanded) .map-toolbar { grid-row: 1; }
+  .map-panel:not(.map-panel--expanded) .cafe-map { grid-row: 2; }
+  .map-expand-corner {
+    display: inline-block;
+    grid-column: 1;
+    grid-row: 2;
+    align-self: start;
+    justify-self: end;
+    z-index: 5;
+    margin: 10px;
+    padding: 6px 12px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--card-bg);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    color: var(--ink);
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+}
