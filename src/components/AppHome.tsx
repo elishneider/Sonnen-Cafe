@@ -4,18 +4,21 @@ import { CafeCard } from "@/components/CafeCard";
 import { HeroSuns } from "@/components/HeroSuns";
 import { CafeMapSection } from "@/components/CafeMapSection";
 import { useCafeSummaries, STATUS_ORDER } from "@/components/useCafeSummaries";
+import { useIsPhone } from "@/components/useIsPhone";
 import { distanceMetres } from "@/lib/distance";
 
 const NEARBY_COUNT = 8;
+const NEARBY_COUNT_PHONE = 4;
 
 export function AppHome() {
   const { summaries, loaded, error, coords, userLocation } = useCafeSummaries();
+  const isPhone = useIsPhone();
 
   // The cards below the hero are just the cafés closest to you (sunniest first among them);
   // the map shows all of them.
   const nearby = [...summaries]
     .sort((a, b) => distanceMetres(coords, a.cafe) - distanceMetres(coords, b.cafe))
-    .slice(0, NEARBY_COUNT)
+    .slice(0, isPhone ? NEARBY_COUNT_PHONE : NEARBY_COUNT)
     .sort((a, b) => STATUS_ORDER[a.status] - STATUS_ORDER[b.status]);
 
   return (
