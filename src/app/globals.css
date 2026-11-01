@@ -1172,3 +1172,19 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
   cursor: pointer;
 }
 .map-filter-apply:hover { filter: brightness(1.06); }
+
+/* Phones: on a short screen the filter box scrolls, and Apply stays pinned to its bottom edge. */
+@media (max-width: 560px) {
+  .map-filter-panel {
+    max-height: calc(100dvh - 150px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .map-filter-actions {
+    position: sticky;
+    bottom: 0;
+    margin-top: 6px;
+    padding-bottom: 8px;
+    background: var(--card-bg);
+  }
+}

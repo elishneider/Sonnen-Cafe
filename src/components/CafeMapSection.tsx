@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { getStatusAtTime, getTomorrowStatuses, type CafeSunSummary } from "@/lib/cafeSunSummary";
 import { MapFilterMenu } from "@/components/MapFilterMenu";
+import type { SeatingType } from "@/lib/cafes";
 import { NOW, getWhenDate, isWhenSet, type MapWhen } from "@/lib/mapWhen";
 import {
   SUN_STATUS_BADGE_CLASS,
@@ -122,6 +123,8 @@ export function CafeMapSection({
   const isPhone = useIsPhone();
   const [detailOpen, setDetailOpen] = useState(false);
   const [activeFilters, setActiveFilters] = useState<SunStatus[]>([]);
+  // Optional: no seating type ticked means every kind of seating is shown.
+  const [seatingFilters, setSeatingFilters] = useState<SeatingType[]>([]);
   const [when, setWhen] = useState<MapWhen>(NOW);
   // The big layout (sidebar list + large map) only exists on the /map page; on the home
   // page the small map links there.
@@ -151,11 +154,13 @@ export function CafeMapSection({
 
   // With no filter applied every café is listed (closed ones as plain dots). Once a day/time
   // or condition is chosen, only cafés that are open then — and match the conditions — show.
+  // A seating type only narrows by type, so closed cafés of that type still show as dots.
   const isVisible = (
     summary: CafeSunSummary,
     filters: SunStatus[],
     text: string,
     at: MapWhen = when,
+    seating: SeatingType[] = seatingFilters,
   ) => {
     const q = text.trim().toLowerCase();
     // The name must start with what's typed, so results narrow with every letter.
@@ -166,8 +171,12 @@ export function CafeMapSection({
       statusesAtWhen(summary, at).some(
         (status) => status !== "closed" && (filters.length === 0 || filters.includes(status)),
       );
-    return matchesText && matchesFilter;
+    const matchesSeating = seating.length === 0 || seating.includes(summary.cafe.seatingType);
+    return matchesText && matchesFilter && matchesSeating;
   };
+  // Only offer the seating types that actually exist among the cafés.
+  const SEATING_ORDER: SeatingType[] = ["pavement", "terrace", "courtyard", "garden"];
+  const seatingOptions = SEATING_ORDER.filter((type) => summaries.some((s) => s.cafe.seatingType === type));
   // Pressing the "show my location" button counts too, for visitors whose browser hadn't shared it yet.
   const origin = pressedLocation ?? userLocation;
   const visibleSummaries = summaries
@@ -307,9 +316,9 @@ export function CafeMapSection({
     });
   }
 
-  function closeOpenPopupIfHidden(filters: SunStatus[], nextWhen: MapWhen) {
+  function closeOpenPopupIfHidden(filters: SunStatus[], nextWhen: MapWhen, nextSeating: SeatingType[] = seatingFilters) {
     const open = openCafeId ? summaries.find((s) => s.cafe.id === openCafeId) : undefined;
-    if (open && !isVisible(open, filters, "", nextWhen)) closeCafe();
+    if (open && !isVisible(open, filters, "", nextWhen, nextSeating)) closeCafe();
   }
 
   function changeWhen(next: MapWhen) {
@@ -320,6 +329,13 @@ export function CafeMapSection({
   function resetFilters() {
     setWhen(NOW);
     setActiveFilters([]);
+    setSeatingFilters([]);
+  }
+
+  function toggleSeating(type: SeatingType) {
+    const next = seatingFilters.includes(type) ? seatingFilters.filter((t) => t !== type) : [...seatingFilters, type];
+    setSeatingFilters(next);
+    closeOpenPopupIfHidden(activeFilters, when, next);
   }
 
   function toggleFilter(status: SunStatus) {
@@ -454,6 +470,9 @@ export function CafeMapSection({
           onWhenChange={changeWhen}
           conditions={activeFilters}
           onToggleCondition={toggleFilter}
+          seatingOptions={seatingOptions}
+          seating={seatingFilters}
+          onToggleSeating={toggleSeating}
           onReset={resetFilters}
         />
       </div>

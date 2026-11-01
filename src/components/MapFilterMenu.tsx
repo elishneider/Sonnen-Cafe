@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { SunStatus } from "@/lib/sunStatus";
+import type { SeatingType } from "@/lib/cafes";
+import { SEATING_TYPE_LABEL } from "@/lib/seatingTypePresentation";
 import { SUN_STATUS_ICON } from "@/lib/sunStatusPresentation";
 import {
   NOW,
@@ -23,12 +25,19 @@ export function MapFilterMenu({
   onWhenChange,
   conditions,
   onToggleCondition,
+  seatingOptions,
+  seating,
+  onToggleSeating,
   onReset,
 }: {
   when: MapWhen;
   onWhenChange: (when: MapWhen) => void;
   conditions: SunStatus[];
   onToggleCondition: (status: SunStatus) => void;
+  // The seating types that exist among the cafés, which of them are ticked, and how to tick one.
+  seatingOptions: SeatingType[];
+  seating: SeatingType[];
+  onToggleSeating: (type: SeatingType) => void;
   onReset: () => void;
 }) {
   const [open, setOpen] = useState(false);
@@ -52,7 +61,7 @@ export function MapFilterMenu({
 
   const hours = getHourOptions(when.day, new Date());
   const whenLabel = describeWhen(when);
-  const activeCount = conditions.length + (whenLabel ? 1 : 0);
+  const activeCount = conditions.length + seating.length + (whenLabel ? 1 : 0);
   const noTimeValue = when.day === "today" ? "now" : "any";
 
   function changeDay(day: MapDay) {
@@ -135,6 +144,20 @@ export function MapFilterMenu({
               </label>
             ))}
           </div>
+
+          {/* Optional: leave all unticked to see every kind of seating. Hidden if there is only one kind. */}
+          {seatingOptions.length > 1 && (
+            <div className="map-filter-section">
+              <p className="map-filter-heading">Seating</p>
+              {seatingOptions.map((type) => (
+                <label key={type} className="map-filter-option">
+                  <input type="checkbox" checked={seating.includes(type)} onChange={() => onToggleSeating(type)} />
+                  <span className="map-filter-mark map-filter-mark--check" aria-hidden="true" />
+                  {SEATING_TYPE_LABEL[type]}
+                </label>
+              ))}
+            </div>
+          )}
 
           {/* Filters already apply as they are picked; this just puts the box away. */}
           <div className="map-filter-actions">
