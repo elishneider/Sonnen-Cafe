@@ -3,8 +3,16 @@
 // which photos to lead with, and the LIDAR skyline from each seat point (whole degrees, one bearing per 5°).
 import fs from "node:fs";
 
+// Garden, terrace and courtyard cafés that were checked by hand against Google's photos (all confirmed
+// correct) go in whatever the sun-calculation confidence is: their seating is certain, the sun result is
+// less so (trees, roofs, enclosed spaces).
+const CONFIRMED_RARE = new Set(
+  JSON.parse(fs.readFileSync(new URL("./data/seating-review-sample.json", import.meta.url), "utf8"))
+    .filter((r) => ["garden", "terrace", "courtyard"].includes(r.type))
+    .map((r) => r.placeId),
+);
 const skylines = JSON.parse(fs.readFileSync(new URL("./data/skylines-marylebone-soho.json", import.meta.url), "utf8"))
-  .filter((c) => !c.pilot && ["high", "medium"].includes(c.confidence));
+  .filter((c) => !c.pilot && (["high", "medium"].includes(c.confidence) || (CONFIRMED_RARE.has(c.id) && c.lidarProfiles?.length)));
 
 // Photos with a sharpness score under this are mostly close-ups of a coffee or cake (see
 // scripts/rank-photo-sharpness.mjs). They are not wrong, just not useful, so they go last.

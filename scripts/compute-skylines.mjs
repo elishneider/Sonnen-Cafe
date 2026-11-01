@@ -219,9 +219,11 @@ function gridOffsetDeg(lon, lat) {
 }
 
 // Skyline angle at each true compass bearing, from OpenStreetMap buildings.
-function osmProfile(bs, sx, sy, gOff) {
+// For a seat on a roof, `ownBuilding` is skipped (it is the floor) and heights are measured from the roof.
+function osmProfile(bs, sx, sy, gOff, ownBuilding = null) {
   const out = [];
-  const near = bs.filter((b) => b.x1 > sx - 250 && b.x0 < sx + 250 && b.y1 > sy - 250 && b.y0 < sy + 250);
+  const baseH = ownBuilding ? ownBuilding.h + EYE_M : EYE_M;
+  const near = bs.filter((b) => b !== ownBuilding && b.x1 > sx - 250 && b.x0 < sx + 250 && b.y1 > sy - 250 && b.y0 < sy + 250);
   for (let az = 0; az < 360; az += STEP_DEG) {
     const gb = ((az + gOff) * Math.PI) / 180, dx = Math.sin(gb), dy = Math.cos(gb);
     let best = 0;
@@ -234,7 +236,7 @@ function osmProfile(bs, sx, sy, gOff) {
         const t = ((ax - sx) * ey - (ay - sy) * ex) / denom, u = ((ax - sx) * dy - (ay - sy) * dx) / denom;
         if (t > 0.2 && u >= 0 && u <= 1 && t < nearest) nearest = t;
       }
-      if (nearest < Infinity) best = Math.max(best, (Math.atan2(b.h - EYE_M, nearest) * 180) / Math.PI);
+      if (nearest < Infinity) best = Math.max(best, (Math.atan2(b.h - baseH, nearest) * 180) / Math.PI);
     }
     out.push(best);
   }
@@ -294,6 +296,26 @@ function placeSeats(c, e0, n0, bs, roads, gOff) {
       }
     }
     return { how: "no courtyard found", points: [], roadDist: null };
+  }
+  if (c.type === "garden" || c.type === "terrace") {
+    // No street side to work from: a small cluster of seat points around the pin. On a rooftop terrace the
+    // pin sits inside the building, so the cluster stays on that roof; in a garden it avoids buildings.
+    const roof = c.type === "terrace" ? near.find((b) => b.x0 <= e0 && b.x1 >= e0 && b.y0 <= n0 && b.y1 >= n0 && pointInPoly(e0, n0, b.poly)) : null;
+    const pts = [];
+    const step = roof ? 2 : 3;
+    for (const dx of [-step, 0, step]) for (const dy of [-step, 0, step]) {
+      const x = e0 + dx, y = n0 + dy;
+      const ok = roof ? pointInPoly(x, y, roof.poly) : !inAnyBuilding(x, y, near);
+      if (ok) pts.push([x, y]);
+    }
+    if (!pts.length) pts.push([e0, n0]);
+    return {
+      how: roof ? `rooftop terrace: ${pts.length} seat points on the roof (${roof.h.toFixed(0)} m)` : `${c.type}: ${pts.length} seat points around the pin`,
+      points: pts,
+      roadDist: null,
+      ownBuilding: roof,
+      approximate: true,
+    };
   }
   if (c.type !== "pavement") return { how: `${c.type}: needs hand placement`, points: [], roadDist: null };
 
@@ -367,7 +389,7 @@ for (const c of cafes) {
   }
   const lid = [], osm = [];
   for (const [x, y] of seats.points) {
-    osm.push(osmProfile(near, x, y, gOff));
+    osm.push(osmProfile(near, x, y, gOff, seats.ownBuilding ?? null));
     const lp = lidarProfile(x + align.dE, y + align.dN, gOff);
     if (lp) lid.push(lp);
   }
@@ -393,6 +415,7 @@ for (const c of cafes) {
   if (!/front/.test(c.position ?? "") && c.type === "pavement") reasons.push(`seats at the ${c.position}`);
   if (seats.room !== undefined && seats.room < 1.5) reasons.push("very little pavement");
   if (seats.farFromStreet) reasons.push("pin far from any street");
+  if (seats.approximate) reasons.push(`${c.type} seat area is approximate (small cluster around the pin)`);
   // Cover that LIDAR sees but OpenStreetMap doesn't: trees, awnings, canopies.
   if (lid.length) {
     let covered = 0, total = 0;
