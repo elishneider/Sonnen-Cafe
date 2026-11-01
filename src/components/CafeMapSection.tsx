@@ -174,9 +174,12 @@ export function CafeMapSection({
     const matchesSeating = seating.length === 0 || seating.includes(summary.cafe.seatingType);
     return matchesText && matchesFilter && matchesSeating;
   };
-  // Only offer the seating types that actually exist among the cafés.
+  // Every seating type is offered, with how many cafés have it (a type with none yet is greyed out).
   const SEATING_ORDER: SeatingType[] = ["pavement", "terrace", "courtyard", "garden"];
-  const seatingOptions = SEATING_ORDER.filter((type) => summaries.some((s) => s.cafe.seatingType === type));
+  const seatingOptions = SEATING_ORDER.map((type) => ({
+    type,
+    count: summaries.filter((s) => s.cafe.seatingType === type).length,
+  }));
   // Pressing the "show my location" button counts too, for visitors whose browser hadn't shared it yet.
   const origin = pressedLocation ?? userLocation;
   const visibleSummaries = summaries

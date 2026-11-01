@@ -34,8 +34,8 @@ export function MapFilterMenu({
   onWhenChange: (when: MapWhen) => void;
   conditions: SunStatus[];
   onToggleCondition: (status: SunStatus) => void;
-  // The seating types that exist among the cafés, which of them are ticked, and how to tick one.
-  seatingOptions: SeatingType[];
+  // Every seating type with its number of cafés, which are ticked, and how to tick one.
+  seatingOptions: { type: SeatingType; count: number }[];
   seating: SeatingType[];
   onToggleSeating: (type: SeatingType) => void;
   onReset: () => void;
@@ -145,19 +145,28 @@ export function MapFilterMenu({
             ))}
           </div>
 
-          {/* Optional: leave all unticked to see every kind of seating. Hidden if there is only one kind. */}
-          {seatingOptions.length > 1 && (
-            <div className="map-filter-section">
-              <p className="map-filter-heading">Seating</p>
-              {seatingOptions.map((type) => (
-                <label key={type} className="map-filter-option">
-                  <input type="checkbox" checked={seating.includes(type)} onChange={() => onToggleSeating(type)} />
+          {/* Optional: leave all unticked to see every kind of seating. */}
+          <div className="map-filter-section">
+            <p className="map-filter-heading">Seating</p>
+            {seatingOptions.map(({ type, count }) => {
+              const checked = seating.includes(type);
+              // A type with no cafés yet can't be chosen (unless it is already ticked, so it can be unticked).
+              const unavailable = count === 0 && !checked;
+              return (
+                <label key={type} className={`map-filter-option${unavailable ? " map-filter-option--empty" : ""}`}>
+                  <input
+                    type="checkbox"
+                    checked={checked}
+                    disabled={unavailable}
+                    onChange={() => onToggleSeating(type)}
+                  />
                   <span className="map-filter-mark map-filter-mark--check" aria-hidden="true" />
                   {SEATING_TYPE_LABEL[type]}
+                  <span className="map-filter-option-count">{count}</span>
                 </label>
-              ))}
-            </div>
-          )}
+              );
+            })}
+          </div>
 
           {/* Filters already apply as they are picked; this just puts the box away. */}
           <div className="map-filter-actions">

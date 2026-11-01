@@ -1188,3 +1188,8 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
     background: var(--card-bg);
   }
 }
+
+/* Seating options: how many cafés each has; a type with none yet is greyed out. */
+.map-filter-option-count { margin-left: auto; padding-left: 12px; color: var(--ink-soft); font-size: 0.8rem; font-weight: 500; }
+.map-filter-option--empty { opacity: 0.5; cursor: default; }
+.map-filter-option--empty:hover .map-filter-mark { border-color: var(--border); }
