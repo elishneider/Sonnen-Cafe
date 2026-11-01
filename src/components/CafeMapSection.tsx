@@ -108,6 +108,7 @@ export function CafeMapSection({
   const [locateStatus, setLocateStatus] = useState<"idle" | "locating" | "denied" | "failed">("idle");
   const [pressedLocation, setPressedLocation] = useState<{ latitude: number; longitude: number } | null>(null);
   const [suggestionsOpen, setSuggestionsOpen] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
   // The InfoWindow's content is a plain div that React fills with the real CafeCard via a
   // portal, so the map popup is identical to the cards above (photos, timeline, toggle).
   const [popupEl, setPopupEl] = useState<HTMLDivElement | null>(null);
@@ -285,6 +286,9 @@ export function CafeMapSection({
     const matched = summaries.filter((s) => isVisible(s, activeFilters, value));
     if (openCafeId && !matched.some((s) => s.cafe.id === openCafeId)) closeCafe();
 
+    // On a phone the map stays exactly where it is while typing; it only moves once a café is picked from the dropdown.
+    if (isPhone) return;
+
     // Leave the map alone while a matching pin is already on screen; only step in when
     // the user has wandered off (zoomed far into another area, or out to the world).
     const map = mapRef.current;
@@ -396,12 +400,13 @@ export function CafeMapSection({
         <div className="map-toolbar-top">
           <div className="map-search">
             <input
+              ref={searchInputRef}
               type="text"
               placeholder="Search for a café…"
               value={query}
               onChange={(e) => handleQueryChange(e.target.value)}
             />
-            {!expanded && suggestionsOpen && query.trim() && visibleSummaries.length > 0 && (
+            {(!expanded || isPhone) && suggestionsOpen && query.trim() && visibleSummaries.length > 0 && (
               <ul className="map-search-results">
                 {visibleSummaries.map((summary) => (
                   <li key={summary.cafe.id}>
@@ -411,9 +416,12 @@ export function CafeMapSection({
                         goToCafe(summary.cafe.id);
                         setQuery(summary.cafe.name);
                         setSuggestionsOpen(false);
+                        // Close the phone keyboard so the map and the café's preview are in view.
+                        searchInputRef.current?.blur();
                       }}
                     >
                       {summary.cafe.name}
+                      {isPhone && <span className="map-search-result-meta">{summary.cafe.addressLine}</span>}
                     </button>
                   </li>
                 ))}

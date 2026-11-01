@@ -644,6 +644,8 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
   list-style: none;
   padding: 6px;
   z-index: 10;
+  max-height: 320px;
+  overflow-y: auto;
 }
 .map-search-results li button {
   display: block;
@@ -1031,7 +1033,8 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
   .map-panel--expanded .map-toolbar-top { display: contents; }
   .map-search,
   .map-panel--expanded .map-search { flex: 1 1 auto; min-width: 0; max-width: none; }
-  .map-search input { padding: 10px 14px; font-size: 0.9rem; }
+  /* 16px text stops iPhones from zooming the page in when the search box is tapped. */
+  .map-search input { padding: 10px 14px; font-size: 16px; }
   .map-filter-menu { flex: none; }
   .map-filter-trigger { gap: 6px; padding: 9px 12px; font-size: 0.82rem; }
   .map-filter-when,
@@ -1051,7 +1054,7 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
     grid-template-rows: auto 56% minmax(0, 1fr);
   }
   .map-panel--page .map-toolbar { padding: 0 16px; }
-  .map-panel--page .map-search input { padding: 8px 14px; font-size: 0.85rem; }
+  .map-panel--page .map-search input { padding: 8px 14px; font-size: 16px; }
   .map-panel--page .map-filter-trigger { padding: 7px 11px; font-size: 0.78rem; }
 
   /* The map runs from the left edge of the screen to the right. */
@@ -1104,3 +1107,12 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
   font-size: 0.74rem;
 }
 .map-bubble .map-list-body .badge { font-size: 0.66rem; padding: 3px 7px; }
+
+/* Phones: the search dropdown shows the café name with its address, and the Time dropdown in the filters
+   also uses 16px text so iPhones don't zoom in when it is tapped. */
+@media (max-width: 560px) {
+  .map-search-results { max-height: min(60dvh, 360px); }
+  .map-search-results li button { padding: 10px 12px; font-size: 0.95rem; }
+  .map-search-result-meta { display: block; color: var(--ink-soft); font-size: 0.78rem; font-weight: 400; margin-top: 1px; }
+  .map-filter-select { font-size: 16px; }
+}
