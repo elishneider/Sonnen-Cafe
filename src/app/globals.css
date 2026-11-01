@@ -978,40 +978,9 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
   }
 }
 
-/* Phones: a tapped pin shows a small preview over the bottom of the map; tapping it opens the full
-   café card in front of a dimmed page. */
+/* Phones: a tapped pin opens a small bubble out of the pin; tapping it opens the full café card in
+   front of a dimmed page. */
 @media (max-width: 560px) {
-  .map-preview {
-    position: relative;
-    grid-column: 1;
-    grid-row: 2;
-    align-self: end;
-    z-index: 6;
-    /* Bottom margin leaves Google's logo and terms line visible, which its rules require. */
-    margin: 10px 10px 34px;
-  }
-  .map-preview .map-list-item {
-    height: auto;
-    min-height: 88px;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
-  }
-  .map-preview .map-list-photo { height: auto; min-height: 88px; align-self: stretch; flex-basis: 84px; width: 84px; }
-  .map-preview-close {
-    position: absolute;
-    top: -9px;
-    right: -6px;
-    width: 26px;
-    height: 26px;
-    padding: 0;
-    border: 1px solid var(--border);
-    border-radius: 50%;
-    background: var(--card-bg);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-    color: var(--ink);
-    font-size: 1.1rem;
-    line-height: 1;
-    cursor: pointer;
-  }
   .map-modal-backdrop {
     position: fixed;
     inset: 0;
@@ -1108,11 +1077,30 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
   }
   .map-panel--page .map-list-body .badge { font-size: 0.66rem; padding: 3px 7px; }
 
-  /* The preview over the map keeps room for the hours, so it wraps instead of cutting them off. */
-  .map-preview .map-list-body .cafe-card-meta {
-    display: -webkit-box;
-    white-space: normal;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-  }
 }
+
+/* The small bubble that comes out of a tapped pin on phones. */
+.map-bubble .map-list-item {
+  width: 250px;
+  max-width: 100%;
+  height: auto;
+  min-height: 74px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  box-shadow: none;
+}
+.map-bubble .map-list-photo { flex-basis: 70px; width: 70px; height: auto; min-height: 74px; align-self: stretch; border-radius: 8px; }
+.map-bubble .map-list-body { padding: 4px 6px 4px 10px; gap: 1px; }
+/* Google's close button sits over the bubble's top-right corner, so keep the badge clear of it. */
+.map-bubble .map-list-head { margin-bottom: 0; margin-right: 24px; }
+.map-bubble .map-list-name { font-size: 0.9rem; line-height: 1.2; -webkit-line-clamp: 2; }
+.map-bubble .map-list-body .cafe-card-meta {
+  display: -webkit-box;
+  overflow: hidden;
+  white-space: normal;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  font-size: 0.74rem;
+}
+.map-bubble .map-list-body .badge { font-size: 0.66rem; padding: 3px 7px; }

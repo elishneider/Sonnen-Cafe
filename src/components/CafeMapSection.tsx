@@ -116,16 +116,10 @@ export function CafeMapSection({
   const [locateEl, setLocateEl] = useState<HTMLDivElement | null>(null);
   const userMarkerRef = useRef<google.maps.Marker | null>(null);
   const [openCafeId, setOpenCafeId] = useState<string | null>(null);
-  // Phones have no room for the map popup, so a tapped pin shows a small preview instead; tapping
-  // the preview opens the full café card in front of a dimmed page.
+  // On phones the bubble that comes out of a tapped pin is a small preview (no room for the full
+  // card); tapping the preview opens the full café card in front of a dimmed page.
   const isPhone = useIsPhone();
   const [detailOpen, setDetailOpen] = useState(false);
-  // The marker listeners are created once, so they read the current screen size through a ref.
-  const phoneRef = useRef(isPhone);
-  useEffect(() => {
-    phoneRef.current = isPhone;
-    if (isPhone) infoWindowRef.current?.close();
-  }, [isPhone]);
   const [activeFilters, setActiveFilters] = useState<SunStatus[]>([]);
   const [when, setWhen] = useState<MapWhen>(NOW);
   // The big layout (sidebar list + large map) only exists on the /map page; on the home
@@ -245,8 +239,7 @@ export function CafeMapSection({
       marker.addListener("click", () => {
         setOpenCafeId(summary.cafe.id);
         setDetailOpen(false);
-        if (phoneRef.current) infoWindowRef.current?.close();
-        else infoWindowRef.current?.open({ map, anchor: marker });
+        infoWindowRef.current?.open({ map, anchor: marker });
       });
       markersRef.current.set(summary.cafe.id, marker);
     });
@@ -274,12 +267,8 @@ export function CafeMapSection({
     map.panTo(position);
     map.setZoom(CAFE_FOCUS_ZOOM);
     setOpenCafeId(cafeId);
-    if (isPhone) {
-      infoWindowRef.current?.close();
-      setDetailOpen(detail);
-    } else {
-      infoWindowRef.current?.open({ map, anchor: marker });
-    }
+    setDetailOpen(isPhone && detail);
+    infoWindowRef.current?.open({ map, anchor: marker });
   }
 
   function closeCafe() {
@@ -507,30 +496,33 @@ export function CafeMapSection({
           </div>,
           locateEl,
         )}
-      {popupEl && openSummary && !isPhone && createPortal(<CafeCard key={openSummary.cafe.id} summary={openSummary} />, popupEl)}
-      {isPhone && openSummary && !detailOpen && (
-        <div className="map-preview">
-          <button type="button" className="map-list-item" onClick={() => setDetailOpen(true)}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={`/api/cafe-photo/${openSummary.cafe.id}`} alt="" className="map-list-photo" />
-            <span className="map-list-body">
-              <span className="map-list-head">
-                <span className="map-list-name">{openSummary.cafe.name}</span>
-                <span className={`badge ${SUN_STATUS_BADGE_CLASS[statusFor(openSummary)]}`}>
-                  {SUN_STATUS_LABEL[statusFor(openSummary)]}
+      {popupEl &&
+        openSummary &&
+        createPortal(
+          isPhone ? (
+            <div className="map-bubble">
+              <button type="button" className="map-list-item" onClick={() => setDetailOpen(true)}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={`/api/cafe-photo/${openSummary.cafe.id}`} alt="" className="map-list-photo" />
+                <span className="map-list-body">
+                  <span className="map-list-head">
+                    <span className="map-list-name">{openSummary.cafe.name}</span>
+                    <span className={`badge ${SUN_STATUS_BADGE_CLASS[statusFor(openSummary)]}`}>
+                      {SUN_STATUS_LABEL[statusFor(openSummary)]}
+                    </span>
+                  </span>
+                  <span className="cafe-card-meta">{SEATING_TYPE_LABEL[openSummary.cafe.seatingType]}</span>
+                  <span className="cafe-card-meta">
+                    {openSummary.cafe.addressLine} · {formatHours(hoursFor(openSummary))}
+                  </span>
                 </span>
-              </span>
-              <span className="cafe-card-meta">{SEATING_TYPE_LABEL[openSummary.cafe.seatingType]}</span>
-              <span className="cafe-card-meta">
-                {openSummary.cafe.addressLine} · {formatHours(hoursFor(openSummary))}
-              </span>
-            </span>
-          </button>
-          <button type="button" className="map-preview-close" onClick={closeCafe} aria-label="Close preview">
-            ×
-          </button>
-        </div>
-      )}
+              </button>
+            </div>
+          ) : (
+            <CafeCard key={openSummary.cafe.id} summary={openSummary} />
+          ),
+          popupEl,
+        )}
       {modalShown && openSummary &&
         createPortal(
           <div className="map-modal-backdrop" role="dialog" aria-modal="true" aria-label={openSummary.cafe.name} onClick={() => setDetailOpen(false)}>
