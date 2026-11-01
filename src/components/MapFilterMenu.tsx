@@ -36,16 +36,16 @@ export function MapFilterMenu({
 
   useEffect(() => {
     if (!open) return;
-    const onPointerDown = (e: MouseEvent) => {
+    const onPointerDown = (e: PointerEvent) => {
       if (!rootRef.current?.contains(e.target as Node)) setOpen(false);
     };
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(false);
     };
-    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("pointerdown", onPointerDown);
     window.addEventListener("keydown", onKeyDown);
     return () => {
-      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("pointerdown", onPointerDown);
       window.removeEventListener("keydown", onKeyDown);
     };
   }, [open]);
@@ -134,6 +134,13 @@ export function MapFilterMenu({
                 <span aria-hidden="true">{SUN_STATUS_ICON[status]}</span> {label}
               </label>
             ))}
+          </div>
+
+          {/* Filters already apply as they are picked; this just puts the box away. */}
+          <div className="map-filter-actions">
+            <button type="button" className="map-filter-apply" onClick={() => setOpen(false)}>
+              Apply
+            </button>
           </div>
         </div>
       )}

@@ -1152,3 +1152,23 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
   --border: #eee0c8;
   color: var(--ink);
 }
+
+/* "Apply" at the bottom of the filter box: closes the box (the filters themselves apply as they are picked). */
+.map-filter-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+  padding: 10px 18px 4px;
+  border-top: 1px solid var(--border);
+}
+.map-filter-apply {
+  padding: 7px 18px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--sun), var(--sun-deep));
+  color: #2a1a02;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.map-filter-apply:hover { filter: brightness(1.06); }
