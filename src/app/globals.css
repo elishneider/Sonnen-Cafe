@@ -935,8 +935,10 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
     display: grid;
     grid-template-columns: minmax(0, 1fr);
   }
-  .map-panel:not(.map-panel--expanded) .map-toolbar { grid-row: 1; }
-  .map-panel:not(.map-panel--expanded) .cafe-map { grid-row: 2; }
+  /* Column 1 must be explicit: the corner button already holds row 2 / column 1, so a map with an
+     automatic column would be pushed into a second, empty column. */
+  .map-panel:not(.map-panel--expanded) .map-toolbar { grid-column: 1; grid-row: 1; }
+  .map-panel:not(.map-panel--expanded) .cafe-map { grid-column: 1; grid-row: 2; }
   .map-expand-corner {
     display: inline-block;
     grid-column: 1;
