@@ -1030,3 +1030,27 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
     cursor: pointer;
   }
 }
+
+/* Phones: Filters is a small button to the right of the search box (not underneath), and the map
+   page has no "Collapse map" button. */
+@media (max-width: 560px) {
+  .map-toolbar,
+  .map-panel--expanded .map-toolbar {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 8px;
+  }
+  .map-panel--expanded .map-toolbar-top { display: contents; }
+  .map-search,
+  .map-panel--expanded .map-search { flex: 1 1 auto; min-width: 0; max-width: none; }
+  .map-search input { padding: 10px 14px; font-size: 0.9rem; }
+  .map-filter-menu { flex: none; }
+  .map-filter-trigger { gap: 6px; padding: 9px 12px; font-size: 0.82rem; }
+  .map-filter-when,
+  .map-filter-caret { display: none; }
+  .map-filter-clear { padding: 0 12px 0 0; font-size: 1.1rem; }
+  /* The button is now on the right, so the panel opens towards the left. */
+  .map-filter-panel { left: auto; right: 0; }
+  .map-panel--page .map-expand-corner { display: none; }
+}
