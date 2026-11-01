@@ -104,6 +104,8 @@ export function CafeMapSection({
   const [ready, setReady] = useState(false);
   const [loadError, setLoadError] = useState(false);
   const [query, setQuery] = useState("");
+  // What the "show my location" button is doing; failures tell the visitor why instead of staying silent.
+  const [locateStatus, setLocateStatus] = useState<"idle" | "locating" | "denied" | "failed">("idle");
   const [pressedLocation, setPressedLocation] = useState<{ latitude: number; longitude: number } | null>(null);
   const [suggestionsOpen, setSuggestionsOpen] = useState(false);
   // The InfoWindow's content is a plain div that React fills with the real CafeCard via a
@@ -336,32 +338,50 @@ export function CafeMapSection({
   }
 
   function locateMe() {
-    if (!navigator.geolocation || !mapRef.current) return;
-    navigator.geolocation.getCurrentPosition((position) => {
-      const map = mapRef.current;
-      if (!map) return;
-      const here = { lat: position.coords.latitude, lng: position.coords.longitude };
-      setPressedLocation({ latitude: here.lat, longitude: here.lng });
-      map.panTo(here);
-      map.setZoom(15);
+    if (!mapRef.current) return;
+    if (!navigator.geolocation) {
+      setLocateStatus("failed");
+      return;
+    }
+    setLocateStatus("locating");
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLocateStatus("idle");
+        const map = mapRef.current;
+        if (!map) return;
+        const here = { lat: position.coords.latitude, lng: position.coords.longitude };
+        setPressedLocation({ latitude: here.lat, longitude: here.lng });
+        map.panTo(here);
+        map.setZoom(15);
 
-      userMarkerRef.current?.setMap(null);
-      userMarkerRef.current = new google.maps.Marker({
-        position: here,
-        map,
-        title: "You are here",
-        zIndex: 1000,
-        icon: {
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: 8,
-          fillColor: "#4285f4",
-          fillOpacity: 1,
-          strokeColor: "#fff",
-          strokeWeight: 3,
-        },
-      });
-    });
+        userMarkerRef.current?.setMap(null);
+        userMarkerRef.current = new google.maps.Marker({
+          position: here,
+          map,
+          title: "You are here",
+          zIndex: 1000,
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 8,
+            fillColor: "#4285f4",
+            fillOpacity: 1,
+            strokeColor: "#fff",
+            strokeWeight: 3,
+          },
+        });
+      },
+      (error) => setLocateStatus(error.code === error.PERMISSION_DENIED ? "denied" : "failed"),
+      // A rough, recent position is plenty for ranking cafés, and it comes back quickly on phones.
+      { enableHighAccuracy: false, timeout: 10_000, maximumAge: 60_000 },
+    );
   }
+
+  // Error messages fade after a few seconds.
+  useEffect(() => {
+    if (locateStatus !== "denied" && locateStatus !== "failed") return;
+    const timer = setTimeout(() => setLocateStatus("idle"), 7000);
+    return () => clearTimeout(timer);
+  }, [locateStatus]);
 
   const openSummary = openCafeId ? summaries.find((s) => s.cafe.id === openCafeId) : undefined;
   const modalShown = isPhone && detailOpen && Boolean(openSummary);
@@ -463,18 +483,28 @@ export function CafeMapSection({
       </Link>
       {locateEl &&
         createPortal(
-          <button
-            type="button"
-            className="map-locate"
-            onClick={locateMe}
-            aria-label="Show my location"
-            title="Show my location"
-          >
-            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-              <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="2" />
-              <path d="M12 2v4M12 18v4M2 12h4M18 12h4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-          </button>,
+          <div className="map-locate-wrap">
+            <button
+              type="button"
+              className={`map-locate${locateStatus === "locating" ? " map-locate--busy" : ""}`}
+              onClick={locateMe}
+              aria-label="Show my location"
+              aria-busy={locateStatus === "locating"}
+              title="Show my location"
+            >
+              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="2" />
+                <path d="M12 2v4M12 18v4M2 12h4M18 12h4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+            </button>
+            {(locateStatus === "denied" || locateStatus === "failed") && (
+              <p className="map-locate-message" role="status">
+                {locateStatus === "denied"
+                  ? "Location is blocked for this site. Allow it in your browser settings, then try again."
+                  : "Couldn't find your location. Check that location is on and try again."}
+              </p>
+            )}
+          </div>,
           locateEl,
         )}
       {popupEl && openSummary && !isPhone && createPortal(<CafeCard key={openSummary.cafe.id} summary={openSummary} />, popupEl)}

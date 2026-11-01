@@ -819,6 +819,24 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
   cursor: pointer;
 }
 .map-locate:hover { color: #1a73e8; }
+.map-locate-wrap { position: relative; }
+/* While we wait for the phone's position the button pulses; if it fails, a short message explains why. */
+.map-locate--busy { color: #1a73e8; animation: map-locate-pulse 1s ease-in-out infinite; }
+@keyframes map-locate-pulse { 50% { opacity: 0.45; } }
+.map-locate-message {
+  position: absolute;
+  right: 60px;
+  bottom: 10px;
+  width: 220px;
+  margin: 0;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(36, 28, 20, 0.92);
+  color: #fff;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
 
 .cafe-map-error {
   display: flex;
