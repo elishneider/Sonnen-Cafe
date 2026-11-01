@@ -406,6 +406,23 @@ export function CafeMapSection({
               value={query}
               onChange={(e) => handleQueryChange(e.target.value)}
             />
+            {/* Phones only (hidden by CSS elsewhere): a small × that wipes what was typed. */}
+            {query && (
+              <button
+                type="button"
+                className="map-search-clear"
+                aria-label="Clear search"
+                // Keeps the keyboard up (a tap would otherwise take focus off the search box).
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => {
+                  setQuery("");
+                  setSuggestionsOpen(false);
+                  searchInputRef.current?.focus();
+                }}
+              >
+                ×
+              </button>
+            )}
             {(!expanded || isPhone) && suggestionsOpen && query.trim() && visibleSummaries.length > 0 && (
               <ul className="map-search-results">
                 {visibleSummaries.map((summary) => (

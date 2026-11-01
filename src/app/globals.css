@@ -1116,3 +1116,28 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
   .map-search-result-meta { display: block; color: var(--ink-soft); font-size: 0.78rem; font-weight: 400; margin-top: 1px; }
   .map-filter-select { font-size: 16px; }
 }
+
+/* Phones: a small × at the right end of the search box clears what was typed. */
+.map-search-clear { display: none; }
+@media (max-width: 560px) {
+  .map-search input { padding-right: 38px; }
+  .map-search-clear {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--cream-deep);
+    color: var(--ink-soft);
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+}
