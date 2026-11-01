@@ -917,3 +917,11 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
   .cafe-card-photo-carousel,
   .sun-timeline-carousel { touch-action: pan-y; }
 }
+
+/* Phones: the home page café previews are narrower and centred rather than edge to edge. */
+@media (max-width: 560px) {
+  .card-grid {
+    grid-template-columns: minmax(0, 300px);
+    justify-content: center;
+  }
+}
