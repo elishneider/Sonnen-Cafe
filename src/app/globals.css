@@ -1141,3 +1141,14 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
     cursor: pointer;
   }
 }
+
+/* Google draws its bubble white even when the phone is in dark mode, so the preview inside it always
+   uses the light-mode colours (otherwise the cream dark-mode text is nearly invisible on white). */
+.map-bubble {
+  --ink: #241c14;
+  --ink-soft: #5a5148;
+  --card-bg: #ffffff;
+  --cream-deep: #fbecd2;
+  --border: #eee0c8;
+  color: var(--ink);
+}
