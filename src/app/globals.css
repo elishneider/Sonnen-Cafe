@@ -6,9 +6,10 @@
   --ink-soft: #5a5148;
   --cream: #fff8ec;
   --cream-deep: #fbecd2;
-  /* The deeper orange used for the stripe under the current menu item and the band behind the home heading. */
+  /* The deeper orange used for the stripe under the current menu item. */
   --orange-deep: #c25f08;
-  --hero-bg: var(--orange-deep);
+  /* The band behind the home heading: a brighter orange, between that stripe and the site's lighter orange. */
+  --hero-bg: #eb8a1d;
   --card-bg: #ffffff;
   --border: #eee0c8;
   --radius: 16px;
