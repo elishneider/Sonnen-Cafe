@@ -35,10 +35,6 @@ export function AppHome() {
         <h1>
           Find London cafés that have outdoor seating and are catching the sun
         </h1>
-        <p className="hero-sub">
-          We find London cafés with outdoor seating and work out when their tables are in the sun, using the
-          sun&apos;s position, each café&apos;s surroundings and the weather forecast
-        </p>
       </section>
 
       <section className="sunny-now-section">
