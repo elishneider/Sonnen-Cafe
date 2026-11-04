@@ -470,18 +470,16 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
   position: relative;
   z-index: 1;
 }
-/* Phones and tablets: a compact header. Two suns of different sizes at the right: the bigger one in the top right corner
-   above the heading, and the small one directly beneath it, beside the end of the first line of the heading and a
-   touch above its middle. The heading is sized so that line leaves room for the sun. */
-.app-main:has(.hero) { padding-top: 18px; }
-.hero { padding-top: 38px; padding-bottom: 24px; }
+/* Phones and tablets: a compact header that starts close to the menu. Two suns of different sizes sit at the right
+   end of the heading, right beside the text: the bigger one beside the first line (a touch above its middle) and the
+   small one directly beneath it, beside the second line. The heading is sized so the lines leave room for them. */
+.app-main:has(.hero) { padding-top: 14px; }
+.hero { padding-top: 10px; padding-bottom: 24px; }
 .hero h1 { font-size: clamp(1rem, 4.9vw, 1.5rem); }
-.hero-suns { display: block; position: absolute; top: -14px; right: 0; left: 0; height: 36px; color: var(--hero-sun); pointer-events: none; }
-/* Small suns would otherwise be drawn with hairline strokes, so their lines keep a fixed, clearly visible width. */
-.hero-sun circle, .hero-sun path { vector-effect: non-scaling-stroke; stroke-width: 1.6px; }
+.hero-suns { display: block; position: absolute; top: 0; right: 0; left: 0; height: 60px; color: var(--hero-sun); pointer-events: none; }
 .hero-sun { position: absolute; }
-.hero-sun--large { width: 36px; height: 36px; top: 0; right: 4px; }
-.hero-sun--small { width: 22px; height: 22px; top: 47px; right: 11px; transform: rotate(-10deg); }
+.hero-sun--large { width: 28px; height: 28px; top: 4px; right: 4px; }
+.hero-sun--small { width: 18px; height: 18px; top: 36px; right: 9px; transform: rotate(-10deg); }
 .hero-sun--medium { display: none; }
 /* Very small phones (about 320px wide): a slightly smaller heading leaves room for the small sun beside the first line. */
 @media (max-width: 340px) {
@@ -502,7 +500,6 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
     font-size: clamp(2rem, 3.4vw, 2.75rem);
   }
   .hero-suns { top: 0; bottom: 40px; left: auto; width: 280px; height: auto; }
-  .hero-sun circle, .hero-sun path { vector-effect: none; stroke-width: 2.5; }
   .hero-sun--large { width: 150px; height: 150px; top: -6px; right: 20px; transform: none; }
   .hero-sun--medium { display: block; width: 84px; height: 84px; top: 118px; right: 168px; transform: rotate(12deg); }
   .hero-sun--small { width: 46px; height: 46px; top: 14px; right: 186px; transform: rotate(-10deg); }
