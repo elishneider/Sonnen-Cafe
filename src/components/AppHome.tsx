@@ -4,6 +4,7 @@ import { CafeCard } from "@/components/CafeCard";
 import { HeroSuns } from "@/components/HeroSuns";
 import { CafeMapSection } from "@/components/CafeMapSection";
 import { useCafeSummaries, STATUS_ORDER } from "@/components/useCafeSummaries";
+import { useState } from "react";
 import { useIsPhone } from "@/components/useIsPhone";
 import { distanceMetres } from "@/lib/distance";
 
@@ -13,6 +14,10 @@ const NEARBY_COUNT_PHONE = 4;
 export function AppHome() {
   const { summaries, loaded, error, coords, userLocation } = useCafeSummaries();
   const isPhone = useIsPhone();
+  // Clicking a café's name on a card asks the map below to scroll into view and show that café. The
+  // counter makes a second click on the same café count as a new request.
+  const [showOnMap, setShowOnMap] = useState<{ cafeId: string; request: number } | null>(null);
+  const requestShowOnMap = (cafeId: string) => setShowOnMap((previous) => ({ cafeId, request: (previous?.request ?? 0) + 1 }));
 
   // The cards below the hero are just the cafés closest to you (sunniest first among them);
   // the map shows all of them.
@@ -47,7 +52,7 @@ export function AppHome() {
         ) : (
           <div className="card-grid">
             {nearby.map((summary) => (
-              <CafeCard key={summary.cafe.id} summary={summary} />
+              <CafeCard key={summary.cafe.id} summary={summary} onShowOnMap={requestShowOnMap} />
             ))}
           </div>
         )}
@@ -56,7 +61,7 @@ export function AppHome() {
       <section className="map-section">
         <p className="eyebrow">Find a café</p>
         <h2>Find cafés that are in the sun</h2>
-        <CafeMapSection summaries={summaries} userLocation={userLocation} />
+        <CafeMapSection summaries={summaries} userLocation={userLocation} showOnMap={showOnMap} />
       </section>
     </main>
   );

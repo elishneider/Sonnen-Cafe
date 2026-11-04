@@ -89,9 +89,12 @@ function buildPinIcon(status: DisplayStatus): google.maps.Icon | google.maps.Sym
 export function CafeMapSection({
   summaries,
   userLocation = null,
+  showOnMap = null,
   variant = "inline",
 }: {
   summaries: CafeSunSummary[];
+  // Set from outside (a café's name was clicked elsewhere on the page): scroll here and show that café.
+  showOnMap?: { cafeId: string; request: number } | null;
   // Where the visitor is, if we know. Cafés with the same status are listed nearest first from here.
   userLocation?: { latitude: number; longitude: number } | null;
   // "page" = the dedicated /map page: always the full sidebar + map layout, under the
@@ -402,6 +405,42 @@ export function CafeMapSection({
     const timer = setTimeout(() => setLocateStatus("idle"), 7000);
     return () => clearTimeout(timer);
   }, [locateStatus]);
+
+  // A café was picked elsewhere on the page. If a search or filter here would hide its pin, clear them (done
+  // while rendering, which is React's way of adjusting state in response to a new prop).
+  const [seenShowRequest, setSeenShowRequest] = useState(0);
+  if (showOnMap && showOnMap.request !== seenShowRequest) {
+    setSeenShowRequest(showOnMap.request);
+    const target = summaries.find((s) => s.cafe.id === showOnMap.cafeId);
+    if (target && !isVisible(target, activeFilters, query)) {
+      setWhen(NOW);
+      setActiveFilters([]);
+      setSeatingFilters([]);
+      setQuery("");
+    }
+  }
+
+  // Bring the map into view straight away, then, once the map is ready, move to the café and open its
+  // popup (laptop) or bubble (phone).
+  const handledShowRequest = useRef(0);
+  const scrolledShowRequest = useRef(0);
+  useEffect(() => {
+    if (!showOnMap || scrolledShowRequest.current === showOnMap.request) return;
+    scrolledShowRequest.current = showOnMap.request;
+    containerRef.current?.closest(".map-panel")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [showOnMap]);
+  useEffect(() => {
+    if (!showOnMap || !ready || handledShowRequest.current === showOnMap.request) return;
+    if (!summaries.some((s) => s.cafe.id === showOnMap.cafeId)) return;
+    // A short wait lets the pin reappear first if clearing a filter had hidden it. The request only counts as
+    // handled once it has run, so a re-render in between can't lose it.
+    const timer = setTimeout(() => {
+      handledShowRequest.current = showOnMap.request;
+      goToCafe(showOnMap.cafeId);
+    }, 80);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showOnMap, ready, summaries]);
 
   const openSummary = openCafeId ? summaries.find((s) => s.cafe.id === openCafeId) : undefined;
   const modalShown = isPhone && detailOpen && Boolean(openSummary);

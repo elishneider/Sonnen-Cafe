@@ -9,7 +9,14 @@ import { SEATING_TYPE_LABEL } from "@/lib/seatingTypePresentation";
 import { SunTimeline } from "@/components/SunTimeline";
 import { useSwipe } from "@/components/useSwipe";
 
-export function CafeCard({ summary }: { summary: CafeSunSummary }) {
+export function CafeCard({
+  summary,
+  onShowOnMap,
+}: {
+  summary: CafeSunSummary;
+  // When given (on the home page cards), the café's name becomes a link that shows it on the map.
+  onShowOnMap?: (cafeId: string) => void;
+}) {
   const { cafe, status, todayTimeline, tomorrowTimeline, todayHours, tomorrowHours } = summary;
   const [photoCount, setPhotoCount] = useState(1);
   const [activePhoto, setActivePhoto] = useState(0);
@@ -117,7 +124,21 @@ export function CafeCard({ summary }: { summary: CafeSunSummary }) {
       <div className="cafe-card-body">
         <div className="cafe-card-info">
           <div className="cafe-card-head">
-            <h3>{cafe.name}</h3>
+            <h3>
+              {onShowOnMap ? (
+                <button
+                  type="button"
+                  className="cafe-card-name-link"
+                  onClick={() => onShowOnMap(cafe.id)}
+                  title="Show on the map"
+                  aria-label={`Show ${cafe.name} on the map`}
+                >
+                  {cafe.name}
+                </button>
+              ) : (
+                cafe.name
+              )}
+            </h3>
             <span className={`badge ${SUN_STATUS_BADGE_CLASS[status]}`}>{SUN_STATUS_LABEL[status]}</span>
           </div>
           <p className="cafe-card-meta">{SEATING_TYPE_LABEL[cafe.seatingType]}</p>
