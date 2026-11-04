@@ -6,8 +6,9 @@
   --ink-soft: #5a5148;
   --cream: #fff8ec;
   --cream-deep: #fbecd2;
-  /* The orange band behind the home page heading. */
-  --hero-bg: #f8d08f;
+  /* The deeper orange used for the stripe under the current menu item and the band behind the home heading. */
+  --orange-deep: #c25f08;
+  --hero-bg: var(--orange-deep);
   --card-bg: #ffffff;
   --border: #eee0c8;
   --radius: 16px;
@@ -22,7 +23,6 @@
     --ink-soft: #cbbfa9;
     --cream: #1c1712;
     --cream-deep: #241c14;
-    --hero-bg: #4a3318;
     --card-bg: #2a221a;
     --border: #3a2f22;
     --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
@@ -143,7 +143,7 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
 .site-nav-link[aria-current="page"] {
   color: var(--ink);
   /* A deeper orange than the site's lighter orange, so the stripe under the current page stands out. */
-  border-bottom-color: #c25f08;
+  border-bottom-color: var(--orange-deep);
 }
 .logo-link { text-decoration: none; }
 /* Wordmark: a light, wide-set "SONNEN" joined to a heavier "CAFÉ", over a small,
@@ -476,13 +476,14 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
   width: 100vw;
   transform: translateX(-50%);
   background: var(--hero-bg);
-  border-bottom: 1px solid var(--border);
 }
 /* The big heading is the only text in the header: black, centred. */
 .hero h1 {
   max-width: 860px;
   margin: 0 auto;
   font-size: clamp(1.9rem, 4vw, 2.9rem);
+  /* The band is the same orange in light and dark mode, so the heading is always the dark brown-black. */
+  color: #241c14;
   position: relative;
   z-index: 1;
 }
@@ -497,7 +498,7 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
     font-size: clamp(1.9rem, 3.1vw, 2.5rem);
     text-wrap: balance;
   }
-  .hero-suns { display: block; position: absolute; inset: var(--app-main-top) 0 40px 0; color: var(--ink); pointer-events: none; }
+  .hero-suns { display: block; position: absolute; inset: var(--app-main-top) 0 40px 0; color: #241c14; pointer-events: none; }
   .hero-sun--l1 { width: 104px; height: 104px; left: 2%; top: 8px; transform: rotate(-6deg); }
   .hero-sun--l2 { width: 40px; height: 40px; left: 13%; bottom: 6px; transform: rotate(14deg); }
   .hero-sun--r1 { width: 78px; height: 78px; right: 4%; top: 0; transform: rotate(12deg); }
