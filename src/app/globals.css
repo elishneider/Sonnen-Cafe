@@ -8,8 +8,10 @@
   --cream-deep: #fbecd2;
   /* The deeper orange used for the stripe under the current menu item. */
   --orange-deep: #c25f08;
-  /* The band behind the home heading: a brighter orange, between that stripe and the site's lighter orange. */
-  --hero-bg: #eb8a1d;
+  /* The band behind the home heading: dark espresso brown, with a cream heading and orange suns. */
+  --hero-bg: #2b1d10;
+  --hero-heading: #fff3dc;
+  --hero-sun: #eb8a1d;
   --card-bg: #ffffff;
   --border: #eee0c8;
   --radius: 16px;
@@ -24,6 +26,8 @@
     --ink-soft: #cbbfa9;
     --cream: #1c1712;
     --cream-deep: #241c14;
+    /* A touch lighter than the dark page so the band still reads as a band. */
+    --hero-bg: #3a2813;
     --card-bg: #2a221a;
     --border: #3a2f22;
     --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
@@ -483,8 +487,7 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
   max-width: 860px;
   margin: 0 auto;
   font-size: clamp(1.9rem, 4vw, 2.9rem);
-  /* The band is the same orange in light and dark mode, so the heading is always the dark brown-black. */
-  color: #241c14;
+  color: var(--hero-heading);
   position: relative;
   z-index: 1;
 }
@@ -499,7 +502,7 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
     font-size: clamp(1.9rem, 3.1vw, 2.5rem);
     text-wrap: balance;
   }
-  .hero-suns { display: block; position: absolute; inset: var(--app-main-top) 0 40px 0; color: #241c14; pointer-events: none; }
+  .hero-suns { display: block; position: absolute; inset: var(--app-main-top) 0 40px 0; color: var(--hero-sun); pointer-events: none; }
   .hero-sun--l1 { width: 104px; height: 104px; left: 2%; top: 8px; transform: rotate(-6deg); }
   .hero-sun--l2 { width: 40px; height: 40px; left: 13%; bottom: 6px; transform: rotate(14deg); }
   .hero-sun--r1 { width: 78px; height: 78px; right: 4%; top: 0; transform: rotate(12deg); }
