@@ -1189,7 +1189,23 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
   }
 }
 
-/* Seating options: how many cafés each has; a type with none yet is greyed out. */
-.map-filter-option-count { margin-left: auto; padding-left: 12px; color: var(--ink-soft); font-size: 0.8rem; font-weight: 500; }
+/* Seating options: a type with no cafés yet is greyed out. */
 .map-filter-option--empty { opacity: 0.5; cursor: default; }
 .map-filter-option--empty:hover .map-filter-mark { border-color: var(--border); }
+
+/* Any screen: if the filter box is taller than the space below the search row (a short window), it
+   scrolls and Apply stays pinned to its bottom edge. On a screen with room, nothing changes. */
+.map-filter-panel {
+  max-height: calc(100dvh - 205px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.map-filter-actions {
+  position: sticky;
+  bottom: 0;
+  background: var(--card-bg);
+}
+/* On phones the search row is slimmer, so the box starts higher up and can be taller. */
+@media (max-width: 560px) {
+  .map-filter-panel { max-height: calc(100dvh - 150px); }
+}

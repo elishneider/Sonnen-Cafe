@@ -34,7 +34,7 @@ export function MapFilterMenu({
   onWhenChange: (when: MapWhen) => void;
   conditions: SunStatus[];
   onToggleCondition: (status: SunStatus) => void;
-  // Every seating type with its number of cafés, which are ticked, and how to tick one.
+  // Every seating type (the count only decides whether it can be ticked), which are ticked, and how to tick one.
   seatingOptions: { type: SeatingType; count: number }[];
   seating: SeatingType[];
   onToggleSeating: (type: SeatingType) => void;
@@ -162,7 +162,6 @@ export function MapFilterMenu({
                   />
                   <span className="map-filter-mark map-filter-mark--check" aria-hidden="true" />
                   {SEATING_TYPE_LABEL[type]}
-                  <span className="map-filter-option-count">{count}</span>
                 </label>
               );
             })}
