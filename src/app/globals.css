@@ -452,37 +452,28 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
 .about-page li { margin-bottom: 8px; }
 .about-page strong { color: var(--ink); }
 /* Intro header at the top of the home page, then full-width divider lines between sections. */
-.hero { position: relative; margin-bottom: 40px; padding-bottom: 40px; border-bottom: 1px solid var(--border); }
-/* The big heading is the only text in the header, in a deep orange (a touch darker than the small orange
-   labels so it stays easy to read at this size). */
+.hero { position: relative; margin-bottom: 40px; padding-bottom: 40px; border-bottom: 1px solid var(--border); text-align: center; }
+/* The big heading is the only text in the header: black, centred. */
 .hero h1 {
-  max-width: min(860px, calc(100% - 300px));
-  margin: 0;
+  max-width: 860px;
+  margin: 0 auto;
   font-size: clamp(1.9rem, 4vw, 2.9rem);
-  color: #c96f0f;
   position: relative;
   z-index: 1;
 }
-/* With the sun drawings beside it, the header keeps a minimum height so they fit, and the heading sits in the middle. */
-@media (min-width: 1001px) {
-  .hero { display: flex; align-items: center; min-height: 245px; }
-}
-.hero-suns {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 40px;
-  width: 280px;
-  color: var(--ink);
-  pointer-events: none;
-}
+.hero-suns { display: none; }
 .hero-sun { position: absolute; }
-.hero-sun--large { width: 150px; height: 150px; top: -6px; right: 20px; }
-.hero-sun--medium { width: 84px; height: 84px; top: 118px; right: 168px; transform: rotate(12deg); }
-.hero-sun--small { width: 46px; height: 46px; top: 14px; right: 186px; transform: rotate(-10deg); }
-@media (max-width: 1000px) {
-  .hero h1 { max-width: 860px; }
-  .hero-suns { display: none; }
+/* Wide screens: the sun drawings are scattered around the heading, some on each side but not mirrored, and
+   the header keeps a minimum height so they fit. */
+@media (min-width: 1100px) {
+  .hero { display: flex; align-items: center; justify-content: center; min-height: 245px; }
+  .hero h1 { max-width: min(760px, calc(100% - 560px)); }
+  .hero-suns { display: block; position: absolute; inset: 0 0 40px 0; color: var(--ink); pointer-events: none; }
+  .hero-sun--l1 { width: 128px; height: 128px; left: 5%; top: 16px; transform: rotate(-6deg); }
+  .hero-sun--l2 { width: 46px; height: 46px; left: 19%; bottom: 10px; transform: rotate(14deg); }
+  .hero-sun--r1 { width: 92px; height: 92px; right: 9%; top: 4px; transform: rotate(12deg); }
+  .hero-sun--r2 { width: 54px; height: 54px; right: 17%; bottom: 24px; transform: rotate(-10deg); }
+  .hero-sun--r3 { width: 34px; height: 34px; right: 3%; bottom: 8px; transform: rotate(20deg); }
 }
 .map-section {
   padding-top: 40px;
