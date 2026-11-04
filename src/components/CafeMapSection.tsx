@@ -21,6 +21,7 @@ import type { SunStatus } from "@/lib/sunStatus";
 import type { DisplayStatus } from "@/lib/sunTimeline";
 import { CafeCard } from "@/components/CafeCard";
 import { useIsPhone } from "@/components/useIsPhone";
+import { STATUS_ORDER } from "@/components/useCafeSummaries";
 
 const LONDON_CENTER = { lat: 51.5225, lng: -0.145 };
 const DEFAULT_ZOOM = 13;
@@ -91,7 +92,7 @@ export function CafeMapSection({
   variant = "inline",
 }: {
   summaries: CafeSunSummary[];
-  // Where the visitor is, if we know. The café list is ordered nearest-first from here.
+  // Where the visitor is, if we know. Cafés with the same status are listed nearest first from here.
   userLocation?: { latitude: number; longitude: number } | null;
   // "page" = the dedicated /map page: always the full sidebar + map layout, under the
   // site header, with no expand/collapse button.
@@ -182,9 +183,16 @@ export function CafeMapSection({
   }));
   // Pressing the "show my location" button counts too, for visitors whose browser hadn't shared it yet.
   const origin = pressedLocation ?? userLocation;
+  // Open cafés first, and among those sunny, then partly sunny, then shade; closed cafés come last
+  // (that is STATUS_ORDER). Cafés with the same status are listed nearest first when we know where
+  // the visitor is. The status is the one for the chosen day/time, like the badge on each row.
   const visibleSummaries = summaries
     .filter((s) => isVisible(s, activeFilters, query))
-    .sort((a, b) => (origin ? distanceMetres(origin, a.cafe) - distanceMetres(origin, b.cafe) : 0));
+    .sort(
+      (a, b) =>
+        STATUS_ORDER[statusFor(a)] - STATUS_ORDER[statusFor(b)] ||
+        (origin ? distanceMetres(origin, a.cafe) - distanceMetres(origin, b.cafe) : 0),
+    );
   // One entry per café: its status at the chosen time and whether it's shown.
   const markerKey = summaries
     .map((s) => `${s.cafe.id}:${statusFor(s)}:${isVisible(s, activeFilters, query) ? 1 : 0}`)
