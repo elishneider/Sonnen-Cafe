@@ -457,34 +457,41 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
 .about-page li { margin-bottom: 8px; }
 .about-page strong { color: var(--ink); }
 /* Intro header at the top of the home page, then full-width divider lines between sections. */
-/* The header: a left-aligned black heading with orange suns to its right, and a thin divider line under it (the same
-   line as the one between "Near you" and the map). */
-.hero { position: relative; margin-bottom: 40px; padding-bottom: 40px; border-bottom: 1px solid var(--border); }
+/* The header: a left-aligned black heading with orange suns, and a thin divider line under it (the same line as the one
+   between "Near you" and the map). Phones and tablets get a compact header: the heading on two lines, with a small
+   cluster of suns in the top right corner above it, so the cafés come into view sooner. */
+.app-main:has(.hero) { padding-top: 20px; }
+.hero { position: relative; margin-bottom: 28px; padding-top: 34px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
 .hero h1 {
   max-width: 860px;
   margin: 0;
-  font-size: clamp(1.9rem, 4vw, 2.9rem);
+  font-size: clamp(1.25rem, 3.8vw, 2.2rem);
+  text-wrap: balance;
   position: relative;
   z-index: 1;
 }
-.hero-suns { display: none; }
+.hero-suns { display: block; position: absolute; top: -14px; right: 0; width: 150px; height: 46px; color: var(--hero-sun); pointer-events: none; }
 .hero-sun { position: absolute; }
-/* Wide screens: the suns are spread out across all the empty space to the right of the heading (not mirrored on the
-   left), alternating between higher and lower, and the heading keeps clear of them so it can run on two lines. The
-   header keeps a minimum height so the suns fit. */
+.hero-sun--large { width: 46px; height: 46px; top: 0; right: 6px; }
+.hero-sun--medium { width: 28px; height: 28px; top: 12px; right: 62px; transform: rotate(12deg); }
+.hero-sun--small { width: 20px; height: 20px; top: 2px; right: 96px; transform: rotate(-10deg); }
+/* Very small phones (about 320px wide): a slightly smaller heading still fits on two lines. */
+@media (max-width: 340px) {
+  .hero h1 { font-size: 1.08rem; }
+}
+/* Wide screens: the original arrangement of three suns (a big one, a medium one below-left of it and a small one
+   above-left of it) to the right of the heading, which keeps clear of them so it can run on two lines. */
 @media (min-width: 1100px) {
-  .hero { display: flex; align-items: center; min-height: 190px; }
+  .app-main:has(.hero) { padding-top: 40px; }
+  .hero { display: flex; align-items: center; min-height: 190px; margin-bottom: 40px; padding-top: 0; padding-bottom: 40px; }
   .hero h1 {
     max-width: calc(100% - 340px);
     font-size: clamp(1.9rem, 3.1vw, 2.5rem);
-    text-wrap: balance;
   }
-  .hero-suns { display: block; position: absolute; top: 0; right: 0; bottom: 40px; left: 66%; color: var(--hero-sun); pointer-events: none; }
-  .hero-sun--a { width: 108px; height: 108px; left: 56%; top: 10px; transform: rotate(-6deg); }
-  .hero-sun--b { width: 60px; height: 60px; left: 3%; top: 72px; transform: rotate(12deg); }
-  .hero-sun--c { width: 34px; height: 34px; left: 40%; top: 98px; transform: rotate(-10deg); }
-  .hero-sun--d { width: 30px; height: 30px; right: 3%; top: 100px; transform: rotate(20deg); }
-  .hero-sun--e { width: 42px; height: 42px; left: 22%; top: 14px; transform: rotate(-16deg); }
+  .hero-suns { top: 0; bottom: 40px; width: 300px; height: auto; }
+  .hero-sun--large { width: 112px; height: 112px; top: -4px; right: 15px; }
+  .hero-sun--medium { width: 63px; height: 63px; top: 84px; right: 126px; transform: rotate(12deg); }
+  .hero-sun--small { width: 35px; height: 35px; top: 10px; right: 140px; transform: rotate(-10deg); }
 }
 .map-section {
   padding-top: 40px;

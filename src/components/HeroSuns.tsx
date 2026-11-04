@@ -10,16 +10,15 @@ function Sun({ className }: { className: string }) {
   );
 }
 
-// Decorative outline suns in orange, spread across the space to the right of the home page heading, in different
-// sizes, heights and tilts.
+// Decorative outline suns in orange, next to the home page heading: a big one with a medium and a small one beside
+// it, in different sizes and tilts. On wide screens they sit to the right of the heading; on phones and tablets they
+// are a smaller cluster in the top right corner of the header.
 export function HeroSuns() {
   return (
     <div className="hero-suns" aria-hidden="true">
-      <Sun className="hero-sun--a" />
-      <Sun className="hero-sun--b" />
-      <Sun className="hero-sun--c" />
-      <Sun className="hero-sun--d" />
-      <Sun className="hero-sun--e" />
+      <Sun className="hero-sun--large" />
+      <Sun className="hero-sun--medium" />
+      <Sun className="hero-sun--small" />
     </div>
   );
 }
