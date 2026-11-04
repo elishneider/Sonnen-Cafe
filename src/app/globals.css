@@ -1241,3 +1241,8 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
   .map-panel--page .map-list-body .cafe-card-seating,
   .map-bubble .map-list-body .cafe-card-seating { font-size: 0.82rem; font-weight: 500; color: var(--ink); }
 }
+
+/* Time labels that would collide sit above the bar instead: the tick runs up from the bar and the label is above it. */
+.sun-timeline-labels--above { margin-bottom: 0; }
+.sun-timeline-tick-group--above { top: auto; bottom: 0; flex-direction: column-reverse; }
+.sun-timeline-tick-group--above .sun-timeline-label { margin-top: 0; margin-bottom: 3px; }
