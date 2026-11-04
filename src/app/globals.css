@@ -470,20 +470,22 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
   position: relative;
   z-index: 1;
 }
-/* Phones and tablets: just two small suns of different sizes wrapping around the right-hand corner of the heading: one
-   above it in the top right corner and one below it, a little further in. */
-.hero { padding-top: 30px; padding-bottom: 36px; }
-.hero-suns { display: block; position: absolute; top: -14px; right: 0; bottom: 0; left: 0; color: var(--hero-sun); pointer-events: none; }
+/* Phones and tablets: a compact header. Two small suns of different sizes sit close together in the top right corner,
+   one a little lower than and to the left of the other, and the heading starts just below them. */
+.app-main:has(.hero) { padding-top: 18px; }
+.hero { padding-top: 22px; padding-bottom: 24px; }
+.hero-suns { display: block; position: absolute; top: -14px; right: 0; left: 0; height: 36px; color: var(--hero-sun); pointer-events: none; }
 .hero-sun { position: absolute; }
-.hero-sun--large { width: 34px; height: 34px; top: 0; right: 4px; }
-.hero-sun--medium { width: 20px; height: 20px; bottom: 6px; right: 30px; transform: rotate(12deg); }
+.hero-sun--large { width: 28px; height: 28px; top: 0; right: 4px; }
+.hero-sun--medium { width: 18px; height: 18px; top: 14px; right: 40px; transform: rotate(12deg); }
 .hero-sun--small { display: none; }
 /* Very small phones (about 320px wide): a slightly smaller heading still fits on two lines. */
 @media (max-width: 340px) {
   .hero h1 { font-size: 1.08rem; }
 }
-/* Wide screens: three suns to the right of the heading, spread so that one sits fairly close to the text, one between
-   that and the big sun, and the big sun stays in the corner. The heading keeps clear of them so it can run on two lines. */
+/* Wide screens: the original three suns (a big one, a medium one below-left of it and a small one above-left of it)
+   to the right of the heading, spread out a little more than the original so there is less empty space beside the
+   text. The heading keeps clear of them so it can run on two lines. */
 @media (min-width: 1100px) {
   .app-main:has(.hero) { padding-top: 40px; }
   .hero { display: flex; align-items: center; min-height: 190px; margin-bottom: 40px; padding-top: 0; padding-bottom: 40px; }
@@ -491,10 +493,10 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
     max-width: calc(100% - 340px);
     font-size: clamp(1.9rem, 3.1vw, 2.5rem);
   }
-  .hero-suns { top: 0; bottom: 40px; left: auto; width: 480px; }
-  .hero-sun--large { width: 128px; height: 128px; top: -8px; right: 15px; transform: none; }
-  .hero-sun--medium { width: 72px; height: 72px; top: 68px; bottom: auto; right: 392px; transform: rotate(12deg); }
-  .hero-sun--small { display: block; width: 44px; height: 44px; top: 12px; right: 214px; transform: rotate(-10deg); }
+  .hero-suns { top: 0; bottom: 40px; left: auto; width: 360px; height: auto; }
+  .hero-sun--large { width: 120px; height: 120px; top: -6px; right: 15px; transform: none; }
+  .hero-sun--medium { width: 68px; height: 68px; top: 82px; right: 170px; transform: rotate(12deg); }
+  .hero-sun--small { display: block; width: 40px; height: 40px; top: 10px; right: 292px; transform: rotate(-10deg); }
 }
 .map-section {
   padding-top: 40px;
