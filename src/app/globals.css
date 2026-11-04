@@ -6,6 +6,8 @@
   --ink-soft: #5a5148;
   --cream: #fff8ec;
   --cream-deep: #fbecd2;
+  /* The orange band behind the home page heading. */
+  --hero-bg: #f8d08f;
   --card-bg: #ffffff;
   --border: #eee0c8;
   --radius: 16px;
@@ -20,6 +22,7 @@
     --ink-soft: #cbbfa9;
     --cream: #1c1712;
     --cream-deep: #241c14;
+    --hero-bg: #4a3318;
     --card-bg: #2a221a;
     --border: #3a2f22;
     --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
@@ -453,7 +456,28 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
 .about-page li { margin-bottom: 8px; }
 .about-page strong { color: var(--ink); }
 /* Intro header at the top of the home page, then full-width divider lines between sections. */
-.hero { position: relative; margin-bottom: 40px; padding-bottom: 40px; border-bottom: 1px solid var(--border); text-align: center; }
+/* The header is a band of deeper orange that runs edge to edge, from just under the menu down to a divider line above
+   the "Near you" section. It is drawn by ::before (as wide as the screen) so the heading and suns stay inside the page. */
+.app-main { --app-main-top: 40px; }
+.hero {
+  position: relative;
+  margin-top: calc(var(--app-main-top) * -1);
+  margin-bottom: 40px;
+  padding-top: var(--app-main-top);
+  padding-bottom: 40px;
+  text-align: center;
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  background: var(--hero-bg);
+  border-bottom: 1px solid var(--border);
+}
 /* The big heading is the only text in the header: black, centred. */
 .hero h1 {
   max-width: 860px;
@@ -467,13 +491,13 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
 /* Wide screens: the sun drawings are scattered around the heading, some on each side but not mirrored. They
    stay near the edges so the heading has room to run on two lines, and the header is only as tall as they need. */
 @media (min-width: 1100px) {
-  .hero { display: flex; align-items: center; justify-content: center; min-height: 190px; }
+  .hero { display: flex; align-items: center; justify-content: center; min-height: 230px; }
   .hero h1 {
     max-width: min(820px, calc(100% - 420px));
     font-size: clamp(1.9rem, 3.1vw, 2.5rem);
     text-wrap: balance;
   }
-  .hero-suns { display: block; position: absolute; inset: 0 0 40px 0; color: var(--ink); pointer-events: none; }
+  .hero-suns { display: block; position: absolute; inset: var(--app-main-top) 0 40px 0; color: var(--ink); pointer-events: none; }
   .hero-sun--l1 { width: 104px; height: 104px; left: 2%; top: 8px; transform: rotate(-6deg); }
   .hero-sun--l2 { width: 40px; height: 40px; left: 13%; bottom: 6px; transform: rotate(14deg); }
   .hero-sun--r1 { width: 78px; height: 78px; right: 4%; top: 0; transform: rotate(12deg); }
@@ -909,7 +933,7 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
   .container { padding-left: 16px; padding-right: 16px; }
   .site-header .container,
   body:has(.map-panel--expanded) .site-header .container { padding: 0 16px; }
-  .app-main { padding: 28px 16px 64px; }
+  .app-main { padding: 28px 16px 64px; --app-main-top: 28px; }
 
   /* The menu was wider than the screen, which made phones zoom out or scroll sideways. */
   .header-inner { gap: 12px; }
