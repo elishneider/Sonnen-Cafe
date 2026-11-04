@@ -545,7 +545,7 @@ export function CafeMapSection({
                       {SUN_STATUS_LABEL[statusFor(summary)]}
                     </span>
                   </span>
-                  <span className="cafe-card-meta">{SEATING_TYPE_LABEL[summary.cafe.seatingType]}</span>
+                  <span className="cafe-card-meta cafe-card-seating">{SEATING_TYPE_LABEL[summary.cafe.seatingType]}</span>
                   <span className="cafe-card-meta">
                     {summary.cafe.addressLine} · {formatHours(hoursFor(summary))}
                   </span>
@@ -605,7 +605,7 @@ export function CafeMapSection({
                       {SUN_STATUS_LABEL[statusFor(openSummary)]}
                     </span>
                   </span>
-                  <span className="cafe-card-meta">{SEATING_TYPE_LABEL[openSummary.cafe.seatingType]}</span>
+                  <span className="cafe-card-meta cafe-card-seating">{SEATING_TYPE_LABEL[openSummary.cafe.seatingType]}</span>
                   <span className="cafe-card-meta">
                     {openSummary.cafe.addressLine} · {formatHours(hoursFor(openSummary))}
                   </span>

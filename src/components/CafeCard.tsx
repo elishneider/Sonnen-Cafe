@@ -141,7 +141,7 @@ export function CafeCard({
             </h3>
             <span className={`badge ${SUN_STATUS_BADGE_CLASS[status]}`}>{SUN_STATUS_LABEL[status]}</span>
           </div>
-          <p className="cafe-card-meta">{SEATING_TYPE_LABEL[cafe.seatingType]}</p>
+          <p className="cafe-card-meta cafe-card-seating">{SEATING_TYPE_LABEL[cafe.seatingType]}</p>
           <p className="cafe-card-meta">
             <a
               href={getGoogleMapsUrl(cafe)}

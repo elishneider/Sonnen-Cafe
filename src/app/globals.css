@@ -1232,3 +1232,12 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
 .cafe-card-name-link:focus-visible { color: var(--sun-deep); text-decoration-color: currentColor; }
 /* Leave room under the sticky header when the page scrolls to the map. */
 .map-panel { scroll-margin-top: calc(var(--header-h) + 16px); }
+
+/* The seating type (Pavement seating, Terrace, ...) is a little larger, bolder and darker than the address and
+   hours line under it, so it stands out. */
+.cafe-card-seating { font-size: 0.92rem; font-weight: 500; color: var(--ink); }
+/* The compact rows (phone map list) and the pin bubble set smaller text, so the seating line gets its own size there. */
+@media (max-width: 560px) {
+  .map-panel--page .map-list-body .cafe-card-seating,
+  .map-bubble .map-list-body .cafe-card-seating { font-size: 0.82rem; font-weight: 500; color: var(--ink); }
+}
