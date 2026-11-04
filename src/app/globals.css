@@ -8,9 +8,7 @@
   --cream-deep: #fbecd2;
   /* The deeper orange used for the stripe under the current menu item. */
   --orange-deep: #c25f08;
-  /* The band behind the home heading: dark espresso brown, with a cream heading and orange suns. */
-  --hero-bg: #2b1d10;
-  --hero-heading: #fff3dc;
+  /* The orange of the sun drawings beside the home page heading. */
   --hero-sun: #eb8a1d;
   --card-bg: #ffffff;
   --border: #eee0c8;
@@ -26,8 +24,6 @@
     --ink-soft: #cbbfa9;
     --cream: #1c1712;
     --cream-deep: #241c14;
-    /* A touch lighter than the dark page so the band still reads as a band. */
-    --hero-bg: #3a2813;
     --card-bg: #2a221a;
     --border: #3a2f22;
     --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
@@ -461,53 +457,32 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
 .about-page li { margin-bottom: 8px; }
 .about-page strong { color: var(--ink); }
 /* Intro header at the top of the home page, then full-width divider lines between sections. */
-/* The header is a band of deeper orange that runs edge to edge, from just under the menu down to a divider line above
-   the "Near you" section. It is drawn by ::before (as wide as the screen) so the heading and suns stay inside the page. */
-.app-main { --app-main-top: 40px; }
-.hero {
-  position: relative;
-  margin-top: calc(var(--app-main-top) * -1);
-  margin-bottom: 40px;
-  padding-top: var(--app-main-top);
-  padding-bottom: 40px;
-  text-align: center;
-}
-.hero::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  width: 100vw;
-  transform: translateX(-50%);
-  background: var(--hero-bg);
-}
-/* The big heading is the only text in the header: black, centred. */
+/* The header: a left-aligned black heading with orange suns to its right, and a thin divider line under it (the same
+   line as the one between "Near you" and the map). */
+.hero { position: relative; margin-bottom: 40px; padding-bottom: 40px; border-bottom: 1px solid var(--border); }
 .hero h1 {
   max-width: 860px;
-  margin: 0 auto;
+  margin: 0;
   font-size: clamp(1.9rem, 4vw, 2.9rem);
-  color: var(--hero-heading);
   position: relative;
   z-index: 1;
 }
 .hero-suns { display: none; }
 .hero-sun { position: absolute; }
-/* Wide screens: the sun drawings are scattered around the heading, some on each side but not mirrored. They
-   stay near the edges so the heading has room to run on two lines, and the header is only as tall as they need. */
+/* Wide screens: the suns sit together on the right (not mirrored on the left) and the heading keeps clear of them
+   so it can run on two lines. The header keeps a minimum height so the suns fit. */
 @media (min-width: 1100px) {
-  .hero { display: flex; align-items: center; justify-content: center; min-height: 230px; }
+  .hero { display: flex; align-items: center; min-height: 190px; }
   .hero h1 {
-    max-width: min(820px, calc(100% - 420px));
+    max-width: calc(100% - 340px);
     font-size: clamp(1.9rem, 3.1vw, 2.5rem);
     text-wrap: balance;
   }
-  .hero-suns { display: block; position: absolute; inset: var(--app-main-top) 0 40px 0; color: var(--hero-sun); pointer-events: none; }
-  .hero-sun--l1 { width: 104px; height: 104px; left: 2%; top: 8px; transform: rotate(-6deg); }
-  .hero-sun--l2 { width: 40px; height: 40px; left: 13%; bottom: 6px; transform: rotate(14deg); }
-  .hero-sun--r1 { width: 78px; height: 78px; right: 4%; top: 0; transform: rotate(12deg); }
-  .hero-sun--r2 { width: 46px; height: 46px; right: 12%; bottom: 18px; transform: rotate(-10deg); }
-  .hero-sun--r3 { width: 30px; height: 30px; right: 2%; bottom: 4px; transform: rotate(20deg); }
+  .hero-suns { display: block; position: absolute; top: 0; right: 0; bottom: 40px; width: 300px; color: var(--hero-sun); pointer-events: none; }
+  .hero-sun--a { width: 112px; height: 112px; top: 8px; right: 22px; transform: rotate(-6deg); }
+  .hero-sun--b { width: 64px; height: 64px; top: 78px; right: 156px; transform: rotate(12deg); }
+  .hero-sun--c { width: 38px; height: 38px; top: 14px; right: 150px; transform: rotate(-10deg); }
+  .hero-sun--d { width: 30px; height: 30px; top: 104px; right: 6px; transform: rotate(20deg); }
 }
 .map-section {
   padding-top: 40px;
@@ -938,7 +913,7 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
   .container { padding-left: 16px; padding-right: 16px; }
   .site-header .container,
   body:has(.map-panel--expanded) .site-header .container { padding: 0 16px; }
-  .app-main { padding: 28px 16px 64px; --app-main-top: 28px; }
+  .app-main { padding: 28px 16px 64px; }
 
   /* The menu was wider than the screen, which made phones zoom out or scroll sideways. */
   .header-inner { gap: 12px; }

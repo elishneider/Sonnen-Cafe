@@ -10,16 +10,14 @@ function Sun({ className }: { className: string }) {
   );
 }
 
-// Decorative black outline suns scattered around the home page heading: two on the left and three on the right,
-// in different sizes and tilts so the two sides don't mirror each other.
+// Decorative outline suns in orange, grouped to the right of the home page heading, in different sizes and tilts.
 export function HeroSuns() {
   return (
     <div className="hero-suns" aria-hidden="true">
-      <Sun className="hero-sun--l1" />
-      <Sun className="hero-sun--l2" />
-      <Sun className="hero-sun--r1" />
-      <Sun className="hero-sun--r2" />
-      <Sun className="hero-sun--r3" />
+      <Sun className="hero-sun--a" />
+      <Sun className="hero-sun--b" />
+      <Sun className="hero-sun--c" />
+      <Sun className="hero-sun--d" />
     </div>
   );
 }
