@@ -479,7 +479,7 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
 .hero-suns { display: block; position: absolute; top: 0; right: 0; left: 0; height: 60px; color: var(--hero-sun); pointer-events: none; }
 .hero-sun { position: absolute; }
 .hero-sun--large { width: 28px; height: 28px; top: 4px; right: 4px; }
-.hero-sun--small { width: 18px; height: 18px; top: 36px; right: 9px; transform: rotate(-10deg); }
+.hero-sun--small { width: 18px; height: 18px; top: 40px; right: 13px; transform: rotate(-10deg); }
 .hero-sun--medium { display: none; }
 /* Very small phones (about 320px wide): a slightly smaller heading leaves room for the small sun beside the first line. */
 @media (max-width: 340px) {
@@ -494,12 +494,12 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
    a minimum height so they fit, and the heading is centred in it. */
 @media (min-width: 1100px) {
   .app-main:has(.hero) { padding-top: 40px; }
-  .hero { display: flex; align-items: center; min-height: 245px; margin-bottom: 40px; padding-top: 0; padding-bottom: 40px; }
+  .hero { display: flex; align-items: center; min-height: 229px; margin-bottom: 28px; padding-top: 0; padding-bottom: 24px; }
   .hero h1 {
     max-width: calc(100% - 340px);
     font-size: clamp(2rem, 3.4vw, 2.75rem);
   }
-  .hero-suns { top: 0; bottom: 40px; left: auto; width: 280px; height: auto; }
+  .hero-suns { top: 0; bottom: 24px; left: auto; width: 280px; height: auto; }
   .hero-sun--large { width: 150px; height: 150px; top: -6px; right: 20px; transform: none; }
   .hero-sun--medium { display: block; width: 84px; height: 84px; top: 118px; right: 168px; transform: rotate(12deg); }
   .hero-sun--small { width: 46px; height: 46px; top: 14px; right: 186px; transform: rotate(-10deg); }
