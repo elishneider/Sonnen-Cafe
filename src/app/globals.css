@@ -929,6 +929,11 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
 
 /* Phones. Everything here is inside a max-width query, so laptop and desktop layouts are untouched. */
 @media (max-width: 560px) {
+  /* Home page: a bigger heading (three lines is fine, with room kept on the right for the suns), and slightly smaller
+     section titles ("Cafés near you…", "Find cafés…"). */
+  .hero h1 { font-size: clamp(1.2rem, 6vw, 1.7rem); padding-right: 44px; }
+  .sunny-now-section h2,
+  .map-section h2 { font-size: 1.5rem; }
   /* A small side margin everywhere (the page content had none, so text touched the screen edge). */
   .container { padding-left: 16px; padding-right: 16px; }
   .site-header .container,
