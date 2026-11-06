@@ -478,11 +478,11 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
 .info-seating { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 20px; margin: 0; }
 .info-seating-tile { display: flex; flex-direction: column; gap: 2px; padding-bottom: 6px; border-bottom: 2px solid var(--hero-sun); font-size: 0.88rem; color: var(--ink-soft); }
 .info-seating-tile strong { font-size: 1rem; }
-/* Sun steps: a big orange number, with a thin line between steps. */
+/* Sun steps: an emoji on the left, with a thin line between steps. */
 .info-steps { display: flex; flex-direction: column; margin: 0; }
 .info-step { display: flex; gap: 14px; align-items: flex-start; padding: 12px 0; border-top: 1px solid var(--border); font-size: 0.9rem; color: var(--ink-soft); }
 .info-step:first-child { border-top: 0; padding-top: 4px; }
-.info-step-number { flex: 0 0 1.6rem; font-size: 1.7rem; line-height: 1; font-weight: 500; color: var(--hero-sun); }
+.info-step-emoji { flex: 0 0 1.8rem; font-size: 1.5rem; line-height: 1.2; text-align: center; }
 .info-step div { display: flex; flex-direction: column; gap: 2px; }
 .info-step strong { font-size: 1rem; }
 .info-sources { margin-top: 36px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 0.78rem; color: var(--ink-soft); }

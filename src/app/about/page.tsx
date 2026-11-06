@@ -12,9 +12,9 @@ const SEATING = [
 ];
 
 const SUN_STEPS = [
-  { title: "Where the sun is", note: "Its exact direction and height, any time of day." },
-  { title: "What's in the way", note: "Which way the seats face and how much the buildings around them block." },
-  { title: "The forecast", note: "Hour-by-hour cloud and rain, so a grey sky isn't called sunny." },
+  { emoji: "🌞", title: "Where the sun is", note: "Its exact direction and height, any time of day." },
+  { emoji: "🏙️", title: "What's in the way", note: "Which way the seats face and how much the buildings around them block." },
+  { emoji: "🌦️", title: "The forecast", note: "Hour-by-hour cloud and rain, so a grey sky isn't called sunny." },
 ];
 
 export default function Info() {
@@ -64,9 +64,9 @@ export default function Info() {
 
         <h3 className="info-heading">How we work out the sun</h3>
         <div className="info-steps">
-          {SUN_STEPS.map((step, index) => (
+          {SUN_STEPS.map((step) => (
             <div key={step.title} className="info-step">
-              <span className="info-step-number" aria-hidden="true">{index + 1}</span>
+              <span className="info-step-emoji" aria-hidden="true">{step.emoji}</span>
               <div>
                 <strong>{step.title}</strong>
                 <span>{step.note}</span>
