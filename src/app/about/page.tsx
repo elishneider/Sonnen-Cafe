@@ -74,9 +74,6 @@ export default function Info() {
             </div>
           ))}
         </div>
-        <p className="info-result">
-          Put together, that gives every café a sun timeline for today and tomorrow.
-        </p>
 
         <p className="info-sources">
           Café details, photos and opening hours come from Google. Building outlines are &copy;{" "}
