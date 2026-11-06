@@ -474,15 +474,15 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
 .info-wip h3 { margin: 0 0 2px; font-size: 1.05rem; }
 .info-wip p { margin: 0; font-size: 0.92rem; color: var(--ink); }
 .about-page h3.info-heading { margin: 32px 0 10px; font-size: 1.2rem; }
-/* Seating types: plain text, two across and two below. Sun steps: a plain list with an emoji on the left. */
+/* Seating types: plain text, two across and two below. */
 .info-seating { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 20px; margin: 0; }
 .info-seating-tile { display: flex; flex-direction: column; gap: 2px; font-size: 0.9rem; color: var(--ink-soft); }
 .info-seating-tile strong { font-size: 1rem; }
-.info-steps { display: flex; flex-direction: column; gap: 12px; margin: 0; }
-.info-step { display: grid; grid-template-columns: 2rem 1fr; column-gap: 12px; align-items: center; font-size: 0.9rem; color: var(--ink-soft); }
-.info-step .info-emoji { text-align: center; }
+/* Sun steps: three small boxes side by side (stacked on phones). */
+.info-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 0; }
+.info-step { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; font-size: 0.86rem; color: var(--ink-soft); }
 .info-step div { display: flex; flex-direction: column; gap: 2px; }
-.info-step strong { font-size: 0.98rem; }
+.info-step strong { font-size: 0.95rem; }
 .info-sources { margin-top: 36px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 0.78rem; color: var(--ink-soft); }
 @media (max-width: 560px) {
   .about-lead { font-size: 1rem; margin-bottom: 18px; }
@@ -490,6 +490,7 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
   .info-pillar .info-emoji { grid-row: 1 / span 2; }
   .info-pillar h3 { margin: 0 0 2px; }
   .info-pillars { grid-template-columns: 1fr; }
+  .info-steps { grid-template-columns: 1fr; }
 }
 /* Intro header at the top of the home page, then full-width divider lines between sections. */
 /* The header: a left-aligned black heading with orange suns, and a thin divider line under it (the same line as the one
