@@ -86,6 +86,12 @@ function buildPinIcon(status: DisplayStatus): google.maps.Icon | google.maps.Sym
   };
 }
 
+// Phone map page: how far the list is scrolled before it slides up over the map, how long it must rest at the top before
+// the map comes back, and how long after a move before the opposite move is allowed.
+const SHEET_EXPAND_AT = 240;
+const SHEET_REST_MS = 350;
+const SHEET_COOLDOWN_MS = 900;
+
 export function CafeMapSection({
   summaries,
   userLocation = null,
@@ -130,6 +136,9 @@ export function CafeMapSection({
   const [sheetUp, setSheetUp] = useState(false);
   const listRef = useRef<HTMLUListElement>(null);
   const dragStartY = useRef<number | null>(null);
+  const lastSheetFlip = useRef(0);
+  const sheetIdleTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  useEffect(() => () => clearTimeout(sheetIdleTimer.current), []);
   const [activeFilters, setActiveFilters] = useState<SunStatus[]>([]);
   // Optional: no seating type ticked means every kind of seating is shown.
   const [seatingFilters, setSeatingFilters] = useState<SeatingType[]>([]);
@@ -466,22 +475,36 @@ export function CafeMapSection({
 
   const sheetActive = isPage && isPhone && sheetUp;
   const collapseSheet = () => {
+    lastSheetFlip.current = Date.now();
     setSheetUp(false);
     if (listRef.current) listRef.current.scrollTop = 0;
   };
-  // Scrolling the list down expands it over the map; scrolling back up to the top (or pulling it down there, or
-  // dragging the handle) shows the map again.
+  const expandSheet = () => {
+    lastSheetFlip.current = Date.now();
+    setSheetUp(true);
+  };
+  // Calmer than "flip as soon as the list moves": the list only slides up once you have scrolled about a full screen of
+  // it, and only comes back down once you have been resting at the very top for a moment (not while a flick is still
+  // coasting there). After either move, the other one is held off briefly so it can't flip back and forth.
   const onListScroll = () => {
     if (!isPage || !isPhone) return;
+    clearTimeout(sheetIdleTimer.current);
     const top = listRef.current?.scrollTop ?? 0;
-    if (!sheetUp && top > 40) setSheetUp(true);
-    // Scrolling back up to the very top brings the map back, the mirror of scrolling down to expand.
-    else if (sheetUp && top <= 0) setSheetUp(false);
+    if (!sheetUp) {
+      if (top > SHEET_EXPAND_AT && Date.now() - lastSheetFlip.current > SHEET_COOLDOWN_MS) expandSheet();
+    } else if (top <= 0) {
+      sheetIdleTimer.current = setTimeout(() => {
+        if ((listRef.current?.scrollTop ?? 0) <= 0) collapseSheet();
+      }, SHEET_REST_MS);
+    }
   };
-  const onListTouchStart = (e: React.TouchEvent) => { dragStartY.current = e.touches[0].clientY; };
+  // Pulling down only counts when the finger started on a list that was already at the top.
+  const onListTouchStart = (e: React.TouchEvent) => {
+    dragStartY.current = (listRef.current?.scrollTop ?? 0) <= 0 ? e.touches[0].clientY : null;
+  };
   const onListTouchMove = (e: React.TouchEvent) => {
     if (!sheetActive || dragStartY.current === null) return;
-    if ((listRef.current?.scrollTop ?? 0) <= 0 && e.touches[0].clientY - dragStartY.current > 60) {
+    if ((listRef.current?.scrollTop ?? 0) <= 0 && e.touches[0].clientY - dragStartY.current > 90) {
       dragStartY.current = null;
       collapseSheet();
     }
@@ -494,10 +517,10 @@ export function CafeMapSection({
     if (dragStartY.current === null) return;
     const dy = e.clientY - dragStartY.current;
     dragStartY.current = null;
-    if (dy < -30) setSheetUp(true);
+    if (dy < -30) expandSheet();
     else if (dy > 30) collapseSheet();
     else if (sheetUp) collapseSheet();
-    else setSheetUp(true);
+    else expandSheet();
   };
 
   return (
