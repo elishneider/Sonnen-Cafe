@@ -23,16 +23,18 @@ export default function Info() {
       <SiteHeader />
       <main className="container app-main about-page">
         <p className="eyebrow">Info</p>
-        <h2>Outdoor seating, in the sun</h2>
+        <h2>Chasing the sun, one coffee at a time</h2>
         <p className="about-lead">
-          Sonnen Café London finds London cafés that have outdoor seating, then checks which of them are
-          catching the sun &mdash; right now, later today or tomorrow, weather included.
+          Sonnen Café London helps you find a café with outdoor seating that&apos;s actually in the sun. We look for
+          cafés with tables outside &mdash; on the pavement, a terrace, a courtyard or a garden &mdash; and then check
+          which of them the sun reaches, hour by hour, right now, later today or tomorrow, with the weather taken
+          into account too.
         </p>
 
         <div className="info-pillars">
           <div className="info-pillar">
             <span className="info-emoji" aria-hidden="true">🪑</span>
-            <h3>Finding the seats</h3>
+            <h3>Finding outdoor seating</h3>
             <p>We only list cafés with outdoor seating. That alone saves a lot of wandering.</p>
           </div>
           <div className="info-pillar">
@@ -45,9 +47,9 @@ export default function Info() {
         <aside className="info-wip">
           <h3>A work in progress</h3>
           <p>
-            We&apos;re starting with cafés in central London and adding more parts of the city as we check more
-            cafés. The sun times are good estimates, not promises &mdash; trees, awnings and passing clouds can
-            surprise us.
+            We&apos;re starting with a small group of cafés in central London, checking each one carefully before we
+            add more parts of the city. These are estimates, not guarantees &mdash; real life has trees, awnings and
+            passing clouds we can&apos;t see.
           </p>
         </aside>
 
