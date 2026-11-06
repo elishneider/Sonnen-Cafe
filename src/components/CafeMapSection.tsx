@@ -126,6 +126,10 @@ export function CafeMapSection({
   // card); tapping the preview opens the full café card in front of a dimmed page.
   const isPhone = useIsPhone();
   const [detailOpen, setDetailOpen] = useState(false);
+  // Phone map page only: the café list can slide up over the map (see the "sheet" rules in globals.css).
+  const [sheetUp, setSheetUp] = useState(false);
+  const listRef = useRef<HTMLUListElement>(null);
+  const dragStartY = useRef<number | null>(null);
   const [activeFilters, setActiveFilters] = useState<SunStatus[]>([]);
   // Optional: no seating type ticked means every kind of seating is shown.
   const [seatingFilters, setSeatingFilters] = useState<SeatingType[]>([]);
@@ -460,6 +464,38 @@ export function CafeMapSection({
     };
   }, [modalShown]);
 
+  const sheetActive = isPage && isPhone && sheetUp;
+  const collapseSheet = () => {
+    setSheetUp(false);
+    if (listRef.current) listRef.current.scrollTop = 0;
+  };
+  // Scrolling the list down expands it over the map; pulling it down again when it is back at the top (or dragging the
+  // handle) shows the map again.
+  const onListScroll = () => {
+    if (isPage && isPhone && !sheetUp && (listRef.current?.scrollTop ?? 0) > 40) setSheetUp(true);
+  };
+  const onListTouchStart = (e: React.TouchEvent) => { dragStartY.current = e.touches[0].clientY; };
+  const onListTouchMove = (e: React.TouchEvent) => {
+    if (!sheetActive || dragStartY.current === null) return;
+    if ((listRef.current?.scrollTop ?? 0) <= 0 && e.touches[0].clientY - dragStartY.current > 60) {
+      dragStartY.current = null;
+      collapseSheet();
+    }
+  };
+  const onHandlePointerDown = (e: React.PointerEvent) => {
+    dragStartY.current = e.clientY;
+    e.currentTarget.setPointerCapture(e.pointerId);
+  };
+  const onHandlePointerUp = (e: React.PointerEvent) => {
+    if (dragStartY.current === null) return;
+    const dy = e.clientY - dragStartY.current;
+    dragStartY.current = null;
+    if (dy < -30) setSheetUp(true);
+    else if (dy > 30) collapseSheet();
+    else if (sheetUp) collapseSheet();
+    else setSheetUp(true);
+  };
+
   return (
     <div className={`map-panel${expanded ? " map-panel--expanded" : ""}${isPage ? " map-panel--page" : ""}`}>
       <div className="map-toolbar">
@@ -527,7 +563,24 @@ export function CafeMapSection({
         />
       </div>
       {expanded && (
-        <ul className="map-list" aria-label="Cafés">
+        <ul
+          ref={listRef}
+          className={`map-list${sheetActive ? " map-list--up" : ""}`}
+          aria-label="Cafés"
+          onScroll={onListScroll}
+          onTouchStart={onListTouchStart}
+          onTouchMove={onListTouchMove}
+        >
+          {/* Phones only: a grab handle to drag the list up over the map or down again. */}
+          <li
+            className="map-sheet-handle"
+            aria-hidden="true"
+            onPointerDown={onHandlePointerDown}
+            onPointerUp={onHandlePointerUp}
+            onPointerCancel={() => { dragStartY.current = null; }}
+          >
+            <span />
+          </li>
           {visibleSummaries.length === 0 && <li className="map-list-empty">No open cafés match.</li>}
           {visibleSummaries.map((summary) => (
             <li key={summary.cafe.id}>

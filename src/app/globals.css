@@ -573,6 +573,7 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
   flex-direction: column;
   gap: 10px;
 }
+.map-sheet-handle { display: none; }
 .map-list-empty { color: var(--ink-soft); padding: 12px 4px; }
 .map-list > li { flex: 0 0 auto; }
 .map-list-item {
@@ -1115,6 +1116,35 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
   }
   .map-panel--page .map-list-body .badge { font-size: 0.66rem; padding: 3px 7px; }
 
+  /* The café list is a sheet: scroll it and it slides up over the map; drag the handle (or pull down at the top of the
+     list) and the map comes back. The map keeps its size underneath, so it is exactly as you left it. */
+  .map-panel--page .map-toolbar { position: relative; z-index: 6; }
+  .map-panel--page .map-list { overscroll-behavior-y: contain; padding-top: 0; }
+  .map-panel--page .map-sheet-handle {
+    display: flex;
+    justify-content: center;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    margin: 0 -16px;
+    padding: 6px 0 8px;
+    background: var(--cream);
+    cursor: grab;
+    touch-action: none;
+    flex: 0 0 auto;
+  }
+  .map-panel--page .map-sheet-handle span { width: 44px; height: 5px; border-radius: 3px; background: var(--border); }
+  .map-panel--page .map-list--up {
+    grid-row: 2 / span 2;
+    position: relative;
+    z-index: 3;
+    background: var(--cream);
+    animation: map-sheet-up 0.22s ease-out;
+  }
+}
+@keyframes map-sheet-up {
+  from { transform: translateY(35%); opacity: 0.6; }
+  to { transform: none; opacity: 1; }
 }
 
 /* The small bubble that comes out of a tapped pin on phones. */
