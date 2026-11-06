@@ -52,7 +52,7 @@ export default function Info() {
           </p>
         </aside>
 
-        <h3 className="info-heading">Four kinds of seating</h3>
+        <h3 className="info-heading">We sort outdoor seating into four kinds</h3>
         <div className="info-seating">
           {SEATING.map((s) => (
             <div key={s.name} className="info-seating-tile">
