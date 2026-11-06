@@ -474,11 +474,11 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
 .info-wip h3 { margin: 0 0 2px; font-size: 1.05rem; }
 .info-wip p { margin: 0; font-size: 0.92rem; color: var(--ink-soft); }
 .about-page h3.info-heading { margin: 32px 0 10px; font-size: 1.2rem; }
-/* Seating types and sun steps: plain lists, an emoji on the left and a few words on the right. */
-.info-seating, .info-steps { display: flex; flex-direction: column; gap: 12px; margin: 0; }
-.info-seating-tile { display: grid; grid-template-columns: 2rem 1fr; column-gap: 12px; align-items: center; font-size: 0.9rem; color: var(--ink-soft); }
-.info-seating-tile .info-emoji { grid-row: 1 / span 2; text-align: center; }
-.info-seating-tile strong { font-size: 0.98rem; }
+/* Seating types: plain text, two across and two below. Sun steps: a plain list with an emoji on the left. */
+.info-seating { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 20px; margin: 0; }
+.info-seating-tile { display: flex; flex-direction: column; gap: 2px; font-size: 0.9rem; color: var(--ink-soft); }
+.info-seating-tile strong { font-size: 1rem; }
+.info-steps { display: flex; flex-direction: column; gap: 12px; margin: 0; }
 .info-step { display: grid; grid-template-columns: 2rem 1fr; column-gap: 12px; align-items: center; font-size: 0.9rem; color: var(--ink-soft); }
 .info-step .info-emoji { text-align: center; }
 .info-step div { display: flex; flex-direction: column; gap: 2px; }

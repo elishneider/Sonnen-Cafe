@@ -5,10 +5,10 @@ import { SiteFooter } from "@/components/SiteFooter";
 export const metadata: Metadata = { title: "Info — Sonnen Café London" };
 
 const SEATING = [
-  { emoji: "🪑", name: "Pavement", note: "Tables out front" },
-  { emoji: "🏡", name: "Terrace", note: "A raised or marked-off area" },
-  { emoji: "🏛️", name: "Courtyard", note: "Tucked between buildings" },
-  { emoji: "🌳", name: "Garden", note: "A planted outdoor space" },
+  { name: "Pavement", note: "Tables out front" },
+  { name: "Terrace", note: "A raised or marked-off area" },
+  { name: "Courtyard", note: "Tucked between buildings" },
+  { name: "Garden", note: "A planted outdoor space" },
 ];
 
 const SUN_STEPS = [
@@ -57,7 +57,6 @@ export default function Info() {
         <div className="info-seating">
           {SEATING.map((s) => (
             <div key={s.name} className="info-seating-tile">
-              <span className="info-emoji" aria-hidden="true">{s.emoji}</span>
               <strong>{s.name}</strong>
               <span>{s.note}</span>
             </div>
