@@ -43,15 +43,12 @@ export default function Info() {
         </div>
 
         <aside className="info-wip">
-          <span className="info-emoji" aria-hidden="true">🌱</span>
-          <div>
-            <h3>A work in progress</h3>
-            <p>
-              We&apos;re starting with cafés in central London and adding more parts of the city as we check
-              more cafés. The sun times are good estimates, not promises &mdash; trees, awnings and passing
-              clouds can surprise us.
-            </p>
-          </div>
+          <h3>A work in progress</h3>
+          <p>
+            We&apos;re starting with cafés in central London and adding more parts of the city as we check more
+            cafés. The sun times are good estimates, not promises &mdash; trees, awnings and passing clouds can
+            surprise us.
+          </p>
         </aside>
 
         <h3 className="info-heading">Four kinds of seating</h3>
@@ -78,7 +75,7 @@ export default function Info() {
           ))}
         </div>
         <p className="info-result">
-          <span aria-hidden="true">⏱️</span> Put together, that gives every café a sun timeline for today and tomorrow.
+          Put together, that gives every café a sun timeline for today and tomorrow.
         </p>
 
         <p className="info-sources">
