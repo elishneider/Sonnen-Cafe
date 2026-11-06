@@ -39,7 +39,7 @@ export default function Info() {
           <div className="info-pillar">
             <span className="info-emoji" aria-hidden="true">☀️</span>
             <h3>Checking the sun</h3>
-            <p>For every café, we work out when the sun actually reaches its tables, so you know the best time to go and when to wait.</p>
+            <p>For every café, we work out when the sun actually reaches its tables, so you know when to go where.</p>
           </div>
         </div>
 
