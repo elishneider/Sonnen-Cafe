@@ -474,10 +474,10 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
 .info-wip h3 { margin: 0 0 2px; font-size: 1.05rem; }
 .info-wip p { margin: 0; font-size: 0.92rem; color: var(--ink); }
 .about-page h3.info-heading { margin: 32px 0 10px; font-size: 1.2rem; }
-/* Seating types: plain text, two across and two below. */
-.info-seating { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 20px; margin: 0; }
-.info-seating-tile { display: flex; flex-direction: column; gap: 2px; font-size: 0.9rem; color: var(--ink-soft); }
-.info-seating-tile strong { font-size: 1rem; }
+/* Seating types: one per row, an orange pill on the left and a few words to its right. */
+.info-seating { display: flex; flex-direction: column; gap: 10px; margin: 0; }
+.info-seating-tile { display: flex; align-items: center; gap: 12px; font-size: 0.9rem; color: var(--ink-soft); }
+.info-seating-tile strong { flex: 0 0 auto; min-width: 6.4rem; text-align: center; padding: 4px 12px; border-radius: 999px; background: var(--cream-deep); color: var(--orange-deep); font-size: 0.9rem; font-weight: 600; }
 /* Sun steps: three small boxes side by side (stacked on phones). */
 .info-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 0; }
 .info-step { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; font-size: 0.86rem; color: var(--ink-soft); }
