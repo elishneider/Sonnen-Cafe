@@ -461,8 +461,8 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
 .about-page li { margin-bottom: 8px; }
 .about-page strong { color: var(--ink); }
 
-/* Info page: a friendly intro, two "what we do" cards, a work-in-progress note, then small tiles for the seating types
-   and the three things the sun estimate is built from. */
+/* Info page: a friendly intro, two "what we do" cards, then plain emoji lists: the work-in-progress note, the seating
+   types and the three things the sun estimate is built from. */
 .about-page h2 { font-size: clamp(1.7rem, 5.6vw, 2.2rem); margin-bottom: 12px; }
 .about-lead { font-size: 1.08rem; color: var(--ink); margin: 0 0 24px; }
 .info-emoji { font-size: 1.5rem; line-height: 1; }
@@ -470,19 +470,21 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
 .info-pillar { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; box-shadow: var(--shadow); }
 .info-pillar h3 { margin: 8px 0 4px; font-size: 1.1rem; }
 .info-pillar p { margin: 0; font-size: 0.92rem; color: var(--ink-soft); }
-.info-wip { display: flex; gap: 14px; align-items: flex-start; padding: 14px 18px; border: 2px dashed var(--border); border-radius: var(--radius); background: var(--cream-deep); }
-.info-wip h3 { margin: 0 0 4px; font-size: 1.05rem; }
+.info-wip { display: flex; gap: 14px; align-items: flex-start; margin: 22px 2px 0; }
+.info-wip h3 { margin: 0 0 2px; font-size: 1.05rem; }
 .info-wip p { margin: 0; font-size: 0.92rem; color: var(--ink-soft); }
-.about-page h3.info-heading { margin: 32px 0 12px; font-size: 1.2rem; }
-.info-seating { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-.info-seating-tile { display: flex; flex-direction: column; gap: 2px; padding: 12px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; font-size: 0.84rem; color: var(--ink-soft); }
-.info-seating-tile .info-emoji { margin-bottom: 4px; }
-.info-seating-tile strong { font-size: 0.95rem; }
-.info-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.info-step { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; font-size: 0.86rem; color: var(--ink-soft); }
+.about-page h3.info-heading { margin: 32px 0 10px; font-size: 1.2rem; }
+/* Seating types and sun steps: plain lists, an emoji on the left and a few words on the right. */
+.info-seating, .info-steps { display: flex; flex-direction: column; gap: 12px; margin: 0 2px; }
+.info-seating-tile { display: grid; grid-template-columns: 2rem 1fr; column-gap: 12px; align-items: center; font-size: 0.9rem; color: var(--ink-soft); }
+.info-seating-tile .info-emoji { grid-row: 1 / span 2; text-align: center; }
+.info-seating-tile strong { font-size: 0.98rem; }
+.info-step { display: grid; grid-template-columns: 2rem 1fr; column-gap: 12px; align-items: center; font-size: 0.9rem; color: var(--ink-soft); }
+.info-step .info-emoji { text-align: center; }
 .info-step div { display: flex; flex-direction: column; gap: 2px; }
-.info-step strong { font-size: 0.95rem; }
-.info-result { margin: 14px 0 0; font-size: 0.92rem; color: var(--ink-soft); }
+.info-step strong { font-size: 0.98rem; }
+.info-result { margin: 16px 2px 0; font-size: 0.92rem; color: var(--ink-soft); }
+.info-result span { margin-right: 6px; }
 .info-sources { margin-top: 36px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 0.78rem; color: var(--ink-soft); }
 @media (max-width: 560px) {
   .about-lead { font-size: 1rem; margin-bottom: 18px; }
@@ -490,8 +492,6 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
   .info-pillar .info-emoji { grid-row: 1 / span 2; }
   .info-pillar h3 { margin: 0 0 2px; }
   .info-pillars { grid-template-columns: 1fr; }
-  .info-seating { grid-template-columns: 1fr 1fr; }
-  .info-steps { grid-template-columns: 1fr; }
 }
 /* Intro header at the top of the home page, then full-width divider lines between sections. */
 /* The header: a left-aligned black heading with orange suns, and a thin divider line under it (the same line as the one
