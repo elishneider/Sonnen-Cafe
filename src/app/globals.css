@@ -472,7 +472,7 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
 .info-pillar p { margin: 0; font-size: 0.92rem; color: var(--ink-soft); }
 .info-wip { margin: 24px 0 0; }
 .info-wip h3 { margin: 0 0 2px; font-size: 1.05rem; }
-.info-wip p { margin: 0; font-size: 0.92rem; color: var(--ink-soft); }
+.info-wip p { margin: 0; font-size: 0.92rem; color: var(--ink); }
 .about-page h3.info-heading { margin: 32px 0 10px; font-size: 1.2rem; }
 /* Seating types: plain text, two across and two below. Sun steps: a plain list with an emoji on the left. */
 .info-seating { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 20px; margin: 0; }
