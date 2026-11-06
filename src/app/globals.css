@@ -474,9 +474,9 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
 .info-wip h3 { margin: 0 0 2px; font-size: 1.05rem; }
 .info-wip p { margin: 0; font-size: 0.92rem; color: var(--ink); }
 .about-page h3.info-heading { margin: 32px 0 10px; font-size: 1.2rem; }
-/* Seating types: two across and two below, each with an orange line underneath. */
+/* Seating types: plain text, two across and two below. */
 .info-seating { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 20px; margin: 0; }
-.info-seating-tile { display: flex; flex-direction: column; gap: 2px; padding-bottom: 6px; border-bottom: 2px solid var(--hero-sun); font-size: 0.88rem; color: var(--ink-soft); }
+.info-seating-tile { display: flex; flex-direction: column; gap: 2px; font-size: 0.88rem; color: var(--ink-soft); }
 .info-seating-tile strong { font-size: 1rem; }
 /* Sun steps: an emoji on the left, with a thin line between steps. */
 .info-steps { display: flex; flex-direction: column; margin: 0; }
