@@ -8,6 +8,8 @@ import { getGoogleMapsUrl } from "@/lib/mapsLink";
 import { SEATING_TYPE_LABEL } from "@/lib/seatingTypePresentation";
 import { SunTimeline } from "@/components/SunTimeline";
 import { useSwipe } from "@/components/useSwipe";
+import { usePhotoDrag } from "@/components/usePhotoDrag";
+import { useIsPhone } from "@/components/useIsPhone";
 
 export function CafeCard({
   summary,
@@ -61,18 +63,18 @@ export function CafeCard({
     setActivePhoto((i) => (i + 1) % photoCount);
   }
 
-  const photoSwipe = useSwipe({
-    onSwipeLeft: () => {
-      if (photoCount <= 1) return;
-      setPhotoFailed(false);
-      setActivePhoto((i) => (i + 1) % photoCount);
-    },
-    onSwipeRight: () => {
-      if (photoCount <= 1) return;
-      setPhotoFailed(false);
-      setActivePhoto((i) => (i - 1 + photoCount) % photoCount);
-    },
-  });
+  const isPhone = useIsPhone();
+  const nextPhoto = () => {
+    setPhotoFailed(false);
+    setActivePhoto((i) => (i + 1) % photoCount);
+  };
+  const previousPhoto = () => {
+    setPhotoFailed(false);
+    setActivePhoto((i) => (i - 1 + photoCount) % photoCount);
+  };
+  // On phones the pictures follow your finger; the neighbouring pictures are loaded ahead so they are ready to slide in.
+  const { frameRef: photoFrameRef, handlers: photoHandlers, trackStyle: photoTrackStyle } = usePhotoDrag({ enabled: photoCount > 1 && !photoFailed, onNext: nextPhoto, onPrev: previousPhoto });
+  const photoUrl = (index: number) => `/api/cafe-photo/${cafe.id}/${(index + photoCount) % photoCount}`;
   const timelineSwipe = useSwipe({
     onSwipeLeft: () => setShowTomorrow(true),
     onSwipeRight: () => setShowTomorrow(false),
@@ -80,17 +82,29 @@ export function CafeCard({
 
   return (
     <article className="cafe-card">
-      <div className="cafe-card-photo-carousel" {...photoSwipe}>
+      <div className="cafe-card-photo-carousel" ref={photoFrameRef} {...photoHandlers}>
         {photoFailed ? (
           <div className={`cafe-card-photo cafe-card-photo--${status}`} />
         ) : (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={`/api/cafe-photo/${cafe.id}/${activePhoto}`}
-            alt={cafe.name}
-            className="cafe-card-photo"
-            onError={() => setPhotoFailed(true)}
-          />
+          <div className="cafe-photo-track" style={photoTrackStyle}>
+            <div className="cafe-photo-slide">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              {isPhone && photoCount > 1 && <img src={photoUrl(activePhoto - 1)} alt="" className="cafe-card-photo" />}
+            </div>
+            <div className="cafe-photo-slide">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={photoUrl(activePhoto)}
+                alt={cafe.name}
+                className="cafe-card-photo"
+                onError={() => setPhotoFailed(true)}
+              />
+            </div>
+            <div className="cafe-photo-slide">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              {isPhone && photoCount > 1 && <img src={photoUrl(activePhoto + 1)} alt="" className="cafe-card-photo" />}
+            </div>
+          </div>
         )}
         {photoCount > 1 && !photoFailed && (
           <>

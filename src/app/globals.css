@@ -239,7 +239,11 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
 }
 .cafe-card-photo-carousel {
   position: relative;
+  overflow: hidden;
 }
+/* Previous / current / next picture side by side; the middle one is in view. Sliding it is done in usePhotoDrag. */
+.cafe-photo-track { display: flex; width: 300%; }
+.cafe-photo-slide { flex: 0 0 33.3333%; width: 33.3333%; min-width: 0; }
 .cafe-card-photo {
   display: block;
   width: 100%;
