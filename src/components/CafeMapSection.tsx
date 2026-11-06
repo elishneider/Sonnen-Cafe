@@ -469,10 +469,14 @@ export function CafeMapSection({
     setSheetUp(false);
     if (listRef.current) listRef.current.scrollTop = 0;
   };
-  // Scrolling the list down expands it over the map; pulling it down again when it is back at the top (or dragging the
-  // handle) shows the map again.
+  // Scrolling the list down expands it over the map; scrolling back up to the top (or pulling it down there, or
+  // dragging the handle) shows the map again.
   const onListScroll = () => {
-    if (isPage && isPhone && !sheetUp && (listRef.current?.scrollTop ?? 0) > 40) setSheetUp(true);
+    if (!isPage || !isPhone) return;
+    const top = listRef.current?.scrollTop ?? 0;
+    if (!sheetUp && top > 40) setSheetUp(true);
+    // Scrolling back up to the very top brings the map back, the mirror of scrolling down to expand.
+    else if (sheetUp && top <= 0) setSheetUp(false);
   };
   const onListTouchStart = (e: React.TouchEvent) => { dragStartY.current = e.touches[0].clientY; };
   const onListTouchMove = (e: React.TouchEvent) => {
