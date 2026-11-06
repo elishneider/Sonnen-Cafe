@@ -974,10 +974,10 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
   .sun-timeline-carousel { touch-action: pan-y; }
 }
 
-/* Phones: the home page café previews are narrower and centred rather than edge to edge. */
+/* Phones: the home page café previews are slightly narrower than the screen and centred, not edge to edge. */
 @media (max-width: 560px) {
   .card-grid {
-    grid-template-columns: minmax(0, 300px);
+    grid-template-columns: minmax(0, 332px);
     justify-content: center;
   }
 }
