@@ -26,8 +26,8 @@ export default function Info() {
         <h2>Chasing the sun, one coffee at a time</h2>
         <p className="about-lead">
           Sonnen Café London helps you find a café with outdoor seating that&apos;s actually in the sun. We look for
-          cafés with tables outside and then check which of them the sun reaches, hour by hour, right now, later
-          today or tomorrow, with the weather taken into account too.
+          cafés with tables outside and then check which of them the sun reaches, today or tomorrow, with the weather
+          taken into account too.
         </p>
 
         <div className="info-pillars">
