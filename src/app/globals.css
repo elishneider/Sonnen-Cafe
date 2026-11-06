@@ -474,10 +474,11 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
 .info-wip h3 { margin: 0 0 2px; font-size: 1.05rem; }
 .info-wip p { margin: 0; font-size: 0.92rem; color: var(--ink); }
 .about-page h3.info-heading { margin: 32px 0 10px; font-size: 1.2rem; }
-/* Seating types: plain text, two across and two below. */
-.info-seating { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 20px; margin: 0; }
-.info-seating-tile { display: flex; flex-direction: column; gap: 2px; font-size: 0.88rem; color: var(--ink-soft); }
-.info-seating-tile strong { font-size: 1rem; }
+/* Seating types: a bulleted list with an orange dot, the bold name, then a few words. */
+.info-seating { display: flex; flex-direction: column; gap: 8px; margin: 0; }
+.info-seating-tile { position: relative; padding-left: 17px; font-size: 0.92rem; color: var(--ink-soft); }
+.info-seating-tile::before { content: ""; position: absolute; left: 0; top: 0.55em; width: 7px; height: 7px; border-radius: 50%; background: var(--hero-sun); }
+.info-seating-tile strong { margin-right: 8px; font-size: 1rem; }
 /* Sun steps: an emoji on the left, with a thin line between steps. */
 .info-steps { display: flex; flex-direction: column; margin: 0; }
 .info-step { display: flex; gap: 14px; align-items: flex-start; padding: 12px 0; border-top: 1px solid var(--border); font-size: 0.9rem; color: var(--ink-soft); }
