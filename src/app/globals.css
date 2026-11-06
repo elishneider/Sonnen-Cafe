@@ -460,6 +460,39 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
 .about-page ul { margin: 0 0 12px; padding-left: 1.2em; color: var(--ink-soft); }
 .about-page li { margin-bottom: 8px; }
 .about-page strong { color: var(--ink); }
+
+/* Info page: a friendly intro, two "what we do" cards, a work-in-progress note, then small tiles for the seating types
+   and the three things the sun estimate is built from. */
+.about-page h2 { font-size: clamp(1.7rem, 5.6vw, 2.2rem); margin-bottom: 12px; }
+.about-lead { font-size: 1.08rem; color: var(--ink); margin: 0 0 24px; }
+.info-emoji { font-size: 1.5rem; line-height: 1; }
+.info-pillars { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
+.info-pillar { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; box-shadow: var(--shadow); }
+.info-pillar h3 { margin: 8px 0 4px; font-size: 1.1rem; }
+.info-pillar p { margin: 0; font-size: 0.92rem; color: var(--ink-soft); }
+.info-wip { display: flex; gap: 14px; align-items: flex-start; padding: 14px 18px; border: 2px dashed var(--border); border-radius: var(--radius); background: var(--cream-deep); }
+.info-wip h3 { margin: 0 0 4px; font-size: 1.05rem; }
+.info-wip p { margin: 0; font-size: 0.92rem; color: var(--ink-soft); }
+.about-page h3.info-heading { margin: 32px 0 12px; font-size: 1.2rem; }
+.info-seating { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.info-seating-tile { display: flex; flex-direction: column; gap: 2px; padding: 12px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; font-size: 0.84rem; color: var(--ink-soft); }
+.info-seating-tile .info-emoji { margin-bottom: 4px; }
+.info-seating-tile strong { font-size: 0.95rem; }
+.info-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.info-step { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; font-size: 0.86rem; color: var(--ink-soft); }
+.info-step div { display: flex; flex-direction: column; gap: 2px; }
+.info-step strong { font-size: 0.95rem; }
+.info-result { margin: 14px 0 0; font-size: 0.92rem; color: var(--ink-soft); }
+.info-sources { margin-top: 36px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 0.78rem; color: var(--ink-soft); }
+@media (max-width: 560px) {
+  .about-lead { font-size: 1rem; margin-bottom: 18px; }
+  .info-pillar { padding: 12px 16px; display: grid; grid-template-columns: auto 1fr; column-gap: 12px; align-items: center; }
+  .info-pillar .info-emoji { grid-row: 1 / span 2; }
+  .info-pillar h3 { margin: 0 0 2px; }
+  .info-pillars { grid-template-columns: 1fr; }
+  .info-seating { grid-template-columns: 1fr 1fr; }
+  .info-steps { grid-template-columns: 1fr; }
+}
 /* Intro header at the top of the home page, then full-width divider lines between sections. */
 /* The header: a left-aligned black heading with orange suns, and a thin divider line under it (the same line as the one
    between "Near you" and the map). Phones and tablets get a compact header: the heading on two lines, with a small
@@ -512,7 +545,6 @@ body:has(.map-panel--expanded) .site-header .container { max-width: none; paddin
   padding-top: 40px;
   border-top: 1px solid var(--border);
 }
-.about-lead { font-size: 1.25rem; color: var(--ink); }
 
 .map-toolbar-top { display: contents; }
 .map-expand {

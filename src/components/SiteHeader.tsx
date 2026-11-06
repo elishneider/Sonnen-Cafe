@@ -7,7 +7,7 @@ import { Logo } from "@/components/Logo";
 const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/map", label: "Map" },
-  { href: "/about", label: "About" },
+  { href: "/about", label: "Info" },
 ];
 
 export function SiteHeader() {

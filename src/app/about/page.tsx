@@ -2,91 +2,92 @@ import type { Metadata } from "next";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 
-export const metadata: Metadata = { title: "About — Sonnen Café London" };
+export const metadata: Metadata = { title: "Info — Sonnen Café London" };
 
-export default function About() {
+const SEATING = [
+  { emoji: "🪑", name: "Pavement", note: "Tables out front" },
+  { emoji: "🏡", name: "Terrace", note: "A raised or marked-off area" },
+  { emoji: "🏛️", name: "Courtyard", note: "Tucked between buildings" },
+  { emoji: "🌳", name: "Garden", note: "A planted outdoor space" },
+];
+
+const SUN_STEPS = [
+  { emoji: "🌞", title: "Where the sun is", note: "Its exact direction and height, any time of day." },
+  { emoji: "🏙️", title: "What's in the way", note: "Which way the seats face and how much the buildings around them block." },
+  { emoji: "🌦️", title: "The forecast", note: "Hour-by-hour cloud and rain, so a grey sky isn't called sunny." },
+];
+
+export default function Info() {
   return (
     <>
       <SiteHeader />
       <main className="container app-main about-page">
-        <p className="eyebrow">About</p>
-        <h2>Chasing the sun, one café at a time</h2>
+        <p className="eyebrow">Info</p>
+        <h2>Outdoor seating, in the sun</h2>
         <p className="about-lead">
-          Sonnen Café London shows you which London cafés have outdoor seating that&apos;s actually in the sun
-          &mdash; right now, later today or tomorrow.
+          Sonnen Café London finds London cafés that have outdoor seating, then checks which of them are
+          catching the sun &mdash; right now, later today or tomorrow, weather included.
         </p>
 
-        <h3>Cafés with outdoor seating</h3>
-        <p>
-          We don&apos;t list every café &mdash; only ones with outdoor seating. For each one we look at what
-          kind of seating it is, because that decides how much sun it can get:
-        </p>
-        <ul>
-          <li>
-            <strong>Pavement seating</strong> &mdash; tables right outside the front, on the pavement or on the
-            café&apos;s own space in front of the shop.
-          </li>
-          <li>
-            <strong>Terrace</strong> &mdash; a raised or clearly defined outdoor area.
-          </li>
-          <li>
-            <strong>Courtyard</strong> &mdash; a space enclosed by surrounding buildings.
-          </li>
-          <li>
-            <strong>Garden</strong> &mdash; a planted outdoor area.
-          </li>
-        </ul>
+        <div className="info-pillars">
+          <div className="info-pillar">
+            <span className="info-emoji" aria-hidden="true">🪑</span>
+            <h3>Finding the seats</h3>
+            <p>We only list cafés with outdoor seating. That alone saves a lot of wandering.</p>
+          </div>
+          <div className="info-pillar">
+            <span className="info-emoji" aria-hidden="true">☀️</span>
+            <h3>Checking the sun</h3>
+            <p>For each one we work out when its seats are actually sunny, and when they&apos;re not.</p>
+          </div>
+        </div>
 
-        <h3>How we work out the sun</h3>
-        <p>For every café we combine three things:</p>
-        <ul>
-          <li>
-            <strong>The sun&apos;s position.</strong> We calculate exactly where the sun is in the sky &mdash;
-            its direction and how high it is &mdash; for any time of day.
-          </li>
-          <li>
-            <strong>The café&apos;s surroundings.</strong> Which way its seating faces and how much of the sky
-            nearby buildings block. A courtyard needs the sun to be high enough to clear the rooftops around
-            it.
-          </li>
-          <li>
-            <strong>The weather forecast.</strong> Hour-by-hour cloud cover and rain, so a sunny spot under a
-            grey sky isn&apos;t reported as sunny.
-          </li>
-        </ul>
-        <p>
-          Putting these together, we draw a timeline for each café showing how its seating changes through
-          today and tomorrow.
-        </p>
+        <aside className="info-wip">
+          <span className="info-emoji" aria-hidden="true">🌱</span>
+          <div>
+            <h3>A work in progress</h3>
+            <p>
+              We&apos;re starting with cafés in central London and adding more parts of the city as we check
+              more cafés. The sun times are good estimates, not promises &mdash; trees, awnings and passing
+              clouds can surprise us.
+            </p>
+          </div>
+        </aside>
 
-        <h3>What the labels mean</h3>
-        <ul>
-          <li>
-            <strong>In the sun</strong> &mdash; direct sun reaches the seating and the sky is mostly clear.
-          </li>
-          <li>
-            <strong>Partly sunny</strong> &mdash; the sun reaches the seating, but cloud makes it come and go.
-          </li>
-          <li>
-            <strong>In shade</strong> &mdash; buildings block the sun, or it&apos;s too cloudy or rainy.
-          </li>
-        </ul>
+        <h3 className="info-heading">Four kinds of seating</h3>
+        <div className="info-seating">
+          {SEATING.map((s) => (
+            <div key={s.name} className="info-seating-tile">
+              <span className="info-emoji" aria-hidden="true">{s.emoji}</span>
+              <strong>{s.name}</strong>
+              <span>{s.note}</span>
+            </div>
+          ))}
+        </div>
 
-        <h3>A work in progress</h3>
-        <p>
-          These are estimates, not guarantees &mdash; real life has trees, awnings and passing clouds we can&apos;t
-          see. We&apos;re starting with a small group of cafés and checking each one carefully before we add
-          more.
+        <h3 className="info-heading">How we work out the sun</h3>
+        <div className="info-steps">
+          {SUN_STEPS.map((step) => (
+            <div key={step.title} className="info-step">
+              <span className="info-emoji" aria-hidden="true">{step.emoji}</span>
+              <div>
+                <strong>{step.title}</strong>
+                <span>{step.note}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+        <p className="info-result">
+          <span aria-hidden="true">⏱️</span> Put together, that gives every café a sun timeline for today and tomorrow.
         </p>
 
-        <h3>Where the data comes from</h3>
-        <p>
+        <p className="info-sources">
           Café details, photos and opening hours come from Google. Building outlines are &copy;{" "}
           <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">
             OpenStreetMap contributors
           </a>
-          . Heights of buildings and trees come from Environment Agency LIDAR surveys, contains public sector
-          information licensed under the{" "}
+          . Building and tree heights come from Environment Agency LIDAR surveys, contains public sector information
+          licensed under the{" "}
           <a
             href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
             target="_blank"
