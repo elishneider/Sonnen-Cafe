@@ -34,7 +34,7 @@ export default function Info() {
           <div className="info-pillar">
             <span className="info-emoji" aria-hidden="true">🪑</span>
             <h3>Finding outdoor seating</h3>
-            <p>We only list cafés with outdoor seating. That alone saves a lot of wandering.</p>
+            <p>We find cafés with outdoor seating, so you don&apos;t have to wander around looking for a spot where you can soak up the sun.</p>
           </div>
           <div className="info-pillar">
             <span className="info-emoji" aria-hidden="true">☀️</span>
