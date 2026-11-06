@@ -6,15 +6,15 @@ export const metadata: Metadata = { title: "Info — Sonnen Café London" };
 
 const SEATING = [
   { name: "Pavement", note: "Tables out front" },
-  { name: "Terrace", note: "A raised or marked-off area" },
-  { name: "Courtyard", note: "Tucked between buildings" },
-  { name: "Garden", note: "A planted outdoor space" },
+  { name: "Terrace", note: "Raised or marked off" },
+  { name: "Courtyard", note: "Between buildings" },
+  { name: "Garden", note: "Planted outdoor space" },
 ];
 
 const SUN_STEPS = [
-  { emoji: "🌞", title: "Where the sun is", note: "Its exact direction and height, any time of day." },
-  { emoji: "🏙️", title: "What's in the way", note: "Which way the seats face and how much the buildings around them block." },
-  { emoji: "🌦️", title: "The forecast", note: "Hour-by-hour cloud and rain, so a grey sky isn't called sunny." },
+  { title: "Where the sun is", note: "Its exact direction and height, any time of day." },
+  { title: "What's in the way", note: "Which way the seats face and how much the buildings around them block." },
+  { title: "The forecast", note: "Hour-by-hour cloud and rain, so a grey sky isn't called sunny." },
 ];
 
 export default function Info() {
@@ -64,9 +64,9 @@ export default function Info() {
 
         <h3 className="info-heading">How we work out the sun</h3>
         <div className="info-steps">
-          {SUN_STEPS.map((step) => (
+          {SUN_STEPS.map((step, index) => (
             <div key={step.title} className="info-step">
-              <span className="info-emoji" aria-hidden="true">{step.emoji}</span>
+              <span className="info-step-number" aria-hidden="true">{index + 1}</span>
               <div>
                 <strong>{step.title}</strong>
                 <span>{step.note}</span>
